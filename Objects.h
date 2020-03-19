@@ -25,23 +25,25 @@ public:
     string getName(){return name;}
     void setName(string newName){this->name = newName;}
 
+    void addScore(int score){this->score.addOrder(score);}
+
     int getBestScore(){return score.getFirst()->getData();}
 
     ~User(){}
 };
 
-class Game_Tab{
+class Game_Piece{
 private:
     string letter;
     int score;
 public:
     //Constructor del objeto Game_Tab
-    Game_Tab(string letter, int score){
+    Game_Piece(string letter, int score){
         this->letter = letter;
         this->score = score;
     }
     //Constructor vacio del user
-    Game_Tab(){}
+    Game_Piece(){}
 
     //Accesores y modificadores del objeto
     string getLetter(){return letter;}
@@ -49,7 +51,7 @@ public:
     int getScore(){return score;}
     void setScore(int newScore){this->score = newScore;}
 
-    ~Game_Tab(){}
+    ~Game_Piece(){}
 };
 
 #endif // OBJECTS_H

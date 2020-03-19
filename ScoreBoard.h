@@ -1,6 +1,11 @@
 #ifndef SCOREBOARD_H
 #define SCOREBOARD_H
 
+#include <Objects.h>
+
+#include <iostream>
+using namespace std;
+
 class ScoreBoard{
 
     class Node{
@@ -76,16 +81,13 @@ public:
         Node *aux = this->first;
 
         while (aux) {
-            cout << aux->getUser().getName() << endl;
+            cout << aux->getUser().getName() << " ----- "<< aux->getUser().getBestScore() << endl;
             aux = aux->getNext();
         }
     }
 
     //Retorna el tamaño de la lista
     int getSize(){return size;}
-
-    //Retorna la cabeza
-    Node *getFirst(){return first;}
 
     ~ScoreBoard(){};
 

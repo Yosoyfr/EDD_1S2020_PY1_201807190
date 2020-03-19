@@ -7,6 +7,7 @@
 #include<Stack.h>
 
 #include<SimpleList.h>
+#include<ScoreBoard.h>
 
 #include <iostream>
 using namespace std;
@@ -37,22 +38,32 @@ int main(int argc, char *argv[])
 
     arbol.getDOT();
 
-    SimpleList list;
+    ScoreBoard board;
 
-    list.addOrder(20);
-    list.addOrder(54);
-    list.addOrder(28);
-    list.addOrder(39);
-    list.addOrder(48);
-    list.addOrder(56);
+    User fran = User("Francisco");
+    fran.addScore(20);
+    fran.addScore(54);
+    fran.addScore(28);
+    fran.addScore(39);
 
-    list.print();
+    board.addOrderSB(fran);
 
-    cout << endl << list.indexOf(48) << endl;
-    cout << endl;
+    User maria = User("Maria");
+    maria.addScore(48);
+    maria.addScore(12);
+    maria.addScore(56);
 
-    list.remove(list.indexOf(48));
-    list.print();
+    board.addOrderSB(maria);
+
+    User abel = User("Abel");
+    abel.addScore(8);
+    abel.addScore(98);
+    abel.addScore(59);
+
+    board.addOrderSB(abel);
+
+
+    //board.printSB();
 
 
     //cout << arbol.getDOT()<<endl;

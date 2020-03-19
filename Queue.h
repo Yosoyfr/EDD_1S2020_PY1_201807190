@@ -15,11 +15,11 @@ class Queue{
     private:
         //Atributos del nodo para una cola
         Node *next;
-        Game_Tab data;
+        Game_Piece data;
 
     public:
         //Constructores del nodo
-        Node(Game_Tab data){
+        Node(Game_Piece data){
             this->next = 0;
             this->data = data;
         }
@@ -30,8 +30,8 @@ class Queue{
         //Accesores y modificadores de los atributos del nodo
         Node *getNext(){return next;}
         void setNext(Node *n) {this->next = n;}
-        Game_Tab getData(){return data;}
-        void setData(Game_Tab n) {this->data = n;}
+        Game_Piece getData(){return data;}
+        void setData(Game_Piece n) {this->data = n;}
 
         ~Node(){}
     };
@@ -52,7 +52,7 @@ public:
     }
 
     //Inserta datos a la cola, por el final
-    void add(Game_Tab data){
+    void add(Game_Piece data){
         Node *n = new Node(data);
         if(isEmpty())
             first = n;
@@ -62,8 +62,8 @@ public:
     }
 
     //Remueve el dato al frente de la cola
-    Game_Tab remove(){
-        Game_Tab aux;
+    Game_Piece remove(){
+        Game_Piece aux;
         if(!isEmpty()){
             aux = first->getData();
             first = first->getNext();
@@ -72,7 +72,7 @@ public:
     }
 
     //Obtiene la cima de la cola
-    Game_Tab peek(){
+    Game_Piece peek(){
         if(isEmpty()){}
         return first->getData();
     }

@@ -24,6 +24,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     BinarySearchTree.h \
+    DoubleCircularLIst.h \
+    DoubleLIst.h \
     Node.h \
     Objects.h \
     Queue.h \
