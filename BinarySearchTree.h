@@ -34,12 +34,15 @@ public:
         return  new Node(left, data, right);
     }
 
+    //Obtiene el codigo DOT para formar el grafico
     void getDOT(){
         string graph = "digraph G{\n "
                        "rankdir=TB;\n"
-                       "node [shape=record, style=filled, fillcolor=green];\n";
+                       "labelloc = \"t\";\n"
+                       "node [shape=record];\n";
         graph += root->getDOT();
-        graph += "}";
+        graph += "graph[label=\"Usuarios del juego.\"];\n"
+                 "}";
 
         ofstream file("BinaryTree.dot", ios::out);;
 
@@ -48,8 +51,116 @@ public:
 
         file << graph;
         file.close();
-
         system("dot -Tpng BinaryTree.dot -o BinaryTree.png");
+    }
+
+    //Metodo para buscar algun nodo del arbol
+    Node *search(Node *rootAux, User dataSearch){
+        if (rootAux == 0)
+                 return 0;
+        else if (dataSearch.getName().compare(rootAux->getData().getName()) == 0)
+                 return this->root;
+        else if (dataSearch.getName().compare(rootAux->getData().getName()) == -1)
+                 return search(rootAux->getLeft(), dataSearch);
+        else
+                 return search(rootAux->getRight(), dataSearch);
+    }
+
+    //Metodo para insertar datos al arbol
+    void insert (User data){
+        this->root = insert(this->root, data);
+    }
+
+    Node *insert(Node *rootAux, User data){
+        if (rootAux == 0)
+                 rootAux = new Node(data);
+        else if (data.getName().compare(rootAux->getData().getName()) == -1){
+            Node *leftAux = insert(rootAux->getLeft(), data);
+            rootAux->setLeft(leftAux);
+        }
+        else if (data.getName().compare(rootAux->getData().getName()) == 1){
+            Node *rightAux = insert(rootAux->getRight(), data);
+            rootAux->setRight(rightAux);
+        }
+        else
+                 cout << "Ya existe este user" << endl;
+        return rootAux;
+    }
+
+    void preOrder(){
+        this->root->preOrder(this->root);
+    }
+
+    void inOrder(){
+        this->root->inOrder(this->root);
+    }
+
+    void postOrder(){
+        this->root->postOrder(this->root);
+    }
+
+    void preOrderDOT(){
+        string graph = "digraph G{\n "
+                       "rankdir=LR;\n"
+                       "labelloc = \"t\";\n"
+                       "node [shape=record];\n";
+        graph += this->root->preOrderDOT(this->root);
+        graph += "\ngraph[label=\"Recorrido preorden del ABB.\"];\n"
+                 "}";
+
+        ofstream file("Preorden.dot", ios::out);;
+
+        if(file.fail())
+            cout << "Hubo un error (file.fail)";
+
+        file << graph;
+        file.close();
+
+        system("dot -Tpng Preorden.dot -o Preorden.png");
+    }
+
+    void inOrderDOT(){
+        string graph = "digraph G{\n "
+                       "rankdir=LR;\n"
+                       "labelloc = \"t\";\n"
+                       "node [shape=record];\n";
+        graph += this->root->inOrderDOT(this->root);
+        graph.erase(graph.length()-1);
+        graph.erase(graph.length()-1);
+        graph += "\ngraph[label=\"Recorrido inorden del ABB.\"];\n"
+                 "}";
+
+        ofstream file("Inorden.dot", ios::out);;
+
+        if(file.fail())
+            cout << "Hubo un error (file.fail)";
+
+        file << graph;
+        file.close();
+
+        system("dot -Tpng Inorden.dot -o Inorden.png");
+    }
+
+    void postOrderDOT(){
+        string graph = "digraph G{\n "
+                       "rankdir=LR;\n"
+                       "labelloc = \"t\";\n"
+                       "node [shape=record];\n";
+        graph += this->root->postOrderDOT(this->root);
+        graph.erase(graph.length()-1);
+        graph.erase(graph.length()-1);
+        graph += "\ngraph[label=\"Recorrido postorder del ABB.\"];\n"
+                 "}";
+
+        ofstream file("Postorden.dot", ios::out);;
+
+        if(file.fail())
+            cout << "Hubo un error (file.fail)";
+
+        file << graph;
+        file.close();
+
+        system("dot -Tpng Postorden.dot -o Postorden.png");
     }
 
     //Accesores y modificadores de los atributos del nodo

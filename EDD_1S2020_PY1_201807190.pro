@@ -26,6 +26,7 @@ HEADERS += \
     BinarySearchTree.h \
     DoubleCircularLIst.h \
     DoubleLIst.h \
+    Matrix.h \
     Node.h \
     Objects.h \
     Queue.h \

@@ -4,6 +4,7 @@
 
 #include<iostream>
 #include <qdebug.h>
+#include <fstream>
 
 using namespace  std;
 
@@ -24,6 +25,24 @@ class SimpleList{
 
         //Constructor vacio del nodo
         Node(){}
+
+        string getDOTN()
+        {
+            string graph;
+            int aux = this->next->getData();
+            graph += to_string(aux) +" pts.";
+            return graph;
+        }
+
+        string getDOT(){
+            string graph;
+            int aux = getData();
+            if(this->next)
+                graph += "\"" + to_string(aux) + " pts.\"->\"" + getDOTN() +"\";\n";
+            else
+                graph += "";
+            return graph;
+        }
 
         //Accesores y modificadores de los atributos del nodo
         Node *getNext(){return next;}
@@ -181,17 +200,34 @@ public:
         }
     }
 
-    // Metodo para imprimir los nodos de la lista
-    void print(){
+    //Obtiene el codigo DOT para formar el grafico
+    void getDOT(string player){
+        string graph = "digraph G{\n "
+                       "rankdir=LR;\n"
+                       "labelloc = \"t\";\n"
+                       "node [shape=record];\n";
         Node *aux = this->first;
 
         while (aux) {
-            cout << aux->getData() << endl;
+            graph += aux->getDOT();
             aux = aux->getNext();
         }
+        graph += "graph[label=\"Puntajes de " + player + "\"];\n"
+                 "}";
+        string puntaje = "Puntaje" + player;
+        ofstream file(puntaje + ".dot", ios::out);;
+
+        if(file.fail())
+            cout << "Hubo un error (file.fail)";
+
+        file << graph;
+        file.close();
+        string dot = "dot -Tpng " + puntaje + ".dot -o " + puntaje + ".png";
+        system(dot.c_str());
     }
 
-    void printSB(){
+    // Metodo para imprimir los nodos de la lista
+    void print(){
         Node *aux = this->first;
 
         while (aux) {

@@ -3,16 +3,8 @@
 
 #include<Objects.h>
 
-class Compare{
-public:
-    bool igualQUe(User q);
-    bool menorQue(User q);
-    bool menorIgualQUe(User q);
-    bool mayorQue(User q);
-    bool mayorIgualQUe(User q);
-};
 
-class Node: public Compare{
+class Node{
 private:
     //Atributos de un nodo para un arbol binario
     Node *left;
@@ -44,6 +36,7 @@ public:
     User getData(){return data;}
     void setData(User n) {this->data = n;}
 
+    //Obtiene el codigo DOT para formar el grafico
     string getDOT(){
         string graph;
 
@@ -62,7 +55,79 @@ public:
         return graph;
     }
 
-    ~Node();
+    //Recorrido del arbol en preorden
+    static void preOrder(Node *r){
+        if (r) {
+            r->visit();
+            preOrder(r->getLeft());
+            preOrder(r->getRight());
+        }
+    }
+
+    //Recorrido del arbol inorden
+    static void inOrder(Node *r){
+        if (r) {
+            inOrder(r->getLeft());
+            r->visit();
+            inOrder(r->getRight());
+        }
+    }
+
+    //Recorrido del arbol postorden
+    static void postOrder(Node *r){
+        if (r) {
+            postOrder(r->getLeft());
+            postOrder(r->getRight());
+            r->visit();
+        }
+    }
+
+    void visit(){
+        cout << "<" + getData().getName() + "> " << endl;
+    }
+
+    //Los mismo metodos de arriba, solo que para obtener el dot
+    string preOrderDOT(Node *r){
+        string graph;
+        if (r) {
+            graph += "\"" + r->visitDOT() + "\"";
+            if(r->getLeft())
+                graph += "->" + preOrderDOT(r->getLeft());
+            if(r->getRight())
+                graph += "->" + preOrderDOT(r->getRight());
+        }
+        return graph;
+    }
+
+    string inOrderDOT(Node *r){
+        string graph;
+        if (r) {
+            if(r->getLeft())
+                graph += inOrderDOT(r->getLeft());
+            graph += "\"" + r->visitDOT() + "\"->";
+            if(r->getRight())
+                graph += inOrderDOT(r->getRight());
+        }
+        return graph;
+    }
+
+    string postOrderDOT(Node *r){
+        string graph;
+        if (r) {
+            if(r->getLeft())
+                graph += postOrderDOT(r->getLeft());
+            if(r->getRight())
+                graph += postOrderDOT(r->getRight());
+            graph += "\"" + r->visitDOT() + "\"->";
+        }
+        return graph;
+    }
+
+    string visitDOT(){
+        return getData().getName();
+    }
+
+    //~Node();
 };
 
 

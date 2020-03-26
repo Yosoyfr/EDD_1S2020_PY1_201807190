@@ -5,9 +5,13 @@
 #include <BinarySearchTree.h>
 #include<Node.h>
 #include<Stack.h>
+#include<Queue.h>
 
 #include<SimpleList.h>
 #include<ScoreBoard.h>
+
+#include<DoubleCircularLIst.h>
+#include<DoubleLIst.h>
 
 #include <iostream>
 using namespace std;
@@ -20,23 +24,40 @@ int main(int argc, char *argv[])
     cout << "SCRABBLE++" << endl;
 
     BinarySearchTree arbol;
-    Node *a1, *a2, *ar;
-    Stack pila = Stack();
-
-    a1 = arbol.newTree(0,User("Maria"),0);
-    a2 = arbol.newTree(0,User("Rodrigo"),0);
-    ar = arbol.newTree(a1,User("Esperanza"),a2);
-    pila.push(ar);
-    a1 = arbol.newTree(0,User("Anyora"),0);
-    a2 = arbol.newTree(0,User("Abel"),0);
-    ar = arbol.newTree(a1,User("M Jesus"),a2);
-    pila.push(ar);
-    a2 = pila.pop();
-    a1 = pila.pop();
-    ar = arbol.newTree(a1,User("Francisco"),a2);
-    arbol = ar;
-
+    arbol.insert(User("Heydi"));
+    arbol.insert(User("Carlos"));
+    arbol.insert(User("Antonio"));
+    arbol.insert(User("Eduardo"));
+    arbol.insert(User("Rodrigo"));
+    /*
+    arbol.insert(User("Jesus"));
+    arbol.insert(User("Francisco"));
+    arbol.insert(User("Zoila"));
+    */
     arbol.getDOT();
+    arbol.preOrderDOT();
+    arbol.postOrderDOT();
+    arbol.inOrderDOT();
+
+    //cout << arbol.getRoot()->getData().getName()<< endl;
+
+    DoubleCircularList listaC;
+    listaC.add("Hola");
+    listaC.add("Mundo");
+    listaC.add("Prueba");
+    listaC.add("Diccionario");
+    listaC.add("Feca");
+    listaC.add("Sexo");
+    listaC.add("ALV");
+    listaC.remove("Prueba");
+    listaC.getDOT();
+
+    Queue cola;
+    cola.enqueue(Game_Piece("D", 2, "#FF5733"));
+    cola.enqueue(Game_Piece("H", 3, "#33F6FF"));
+    cola.enqueue(Game_Piece("K", 1, "#FF33FF"));
+    cola.getDOT();
+
 
     ScoreBoard board;
 
@@ -45,6 +66,7 @@ int main(int argc, char *argv[])
     fran.addScore(54);
     fran.addScore(28);
     fran.addScore(39);
+    fran.getScore();
 
     board.addOrderSB(fran);
 
@@ -62,11 +84,23 @@ int main(int argc, char *argv[])
 
     board.addOrderSB(abel);
 
+    board.getDOT();
 
-    //board.printSB();
+    DoubleList listaD;
+    listaD.addLast(Game_Piece("D", 2, "#FF5733"));
+    listaD.addLast(Game_Piece("H", 3, "#33F6FF"));
+    listaD.addLast(Game_Piece("H", 3, "#33F6FF"));
+    listaD.addLast(Game_Piece("K", 1, "#FF33FF"));
+    listaD.addLast(Game_Piece("D", 2, "#FF5733"));
+    listaD.addLast(Game_Piece("A", 2, "#FF5733"));
 
+    DoubleList listaH;
+    listaH.addLast(Game_Piece("J", 2, "#FF5733"));
+    listaH.addLast(Game_Piece("J", 3, "#33F6FF"));
+    listaH.addLast(Game_Piece("P", 3, "#33F6FF"));
+    listaH.addLast(Game_Piece("A", 2, "#FF5733"));
 
-    //cout << arbol.getDOT()<<endl;
+    listaH.getDOT(listaD, listaH, abel.getName(), fran.getName());
 
     return a.exec();
 }

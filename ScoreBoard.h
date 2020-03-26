@@ -2,8 +2,9 @@
 #define SCOREBOARD_H
 
 #include <Objects.h>
-
+#include <fstream>
 #include <iostream>
+
 using namespace std;
 
 class ScoreBoard{
@@ -23,6 +24,24 @@ class ScoreBoard{
 
         //Constructor vacio del nodo
         Node(){}
+
+        string getDOTN()
+        {
+            string graph;
+            int aux = this->next->getUser().getBestScore();
+            graph += this->next->getUser().getName() + ", " + to_string(aux) +" pts.";
+            return graph;
+        }
+
+        string getDOT(){
+            string graph;
+            int aux = getUser().getBestScore();
+            if(this->next)
+                graph += "\"" + getUser().getName() + ", " + to_string(aux) + " pts.\"->\"" + getDOTN() +"\";\n";
+            else
+                graph += "";
+            return graph;
+        }
 
         //Accesores y modificadores de los atributos del nodo
         Node *getNext(){return next;}
@@ -77,6 +96,7 @@ public:
         size++;
     }
 
+    //Imprime en consola la scoreboard
     void printSB(){
         Node *aux = this->first;
 
@@ -84,6 +104,32 @@ public:
             cout << aux->getUser().getName() << " ----- "<< aux->getUser().getBestScore() << endl;
             aux = aux->getNext();
         }
+    }
+
+    //Obtiene el codigo DOT para formar el grafico
+    void getDOT(){
+        string graph = "digraph G{\n "
+                       "rankdir=LR;\n"
+                       "labelloc = \"t\";\n"
+                       "node [shape=record];\n";
+        Node *aux = this->first;
+
+        while (aux) {
+            graph += aux->getDOT();
+            aux = aux->getNext();
+        }
+        graph += "graph[label=\"Scoreboard del juego.\"];\n"
+                 "}";
+
+        ofstream file("ScoreBoard.dot", ios::out);;
+
+        if(file.fail())
+            cout << "Hubo un error (file.fail)";
+
+        file << graph;
+        file.close();
+
+        system("dot -Tpng ScoreBoard.dot -o ScoreBoard.png");
     }
 
     //Retorna el tamaño de la lista
