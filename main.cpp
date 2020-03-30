@@ -28,13 +28,19 @@ int main(int argc, char *argv[])
     Matrix matrix;
 
 
-    matrix.insert(0, 0, Game_Piece("a", 1, "#FF5733"));
-    matrix.insert(2, 1, Game_Piece("b", 2, "#33F6FF"));
-    matrix.insert(1, 2, Game_Piece("c", 3, "#FF33FF"));
-    matrix.insert(0, 1, Game_Piece("d", 4, "#FF5733"));
-    matrix.insert(20, 1, Game_Piece("e", 5, "#33F6FF"));
-    matrix.insert(8, 8, Game_Piece("f", 8, "#33F6FF"));
-    matrix.insert(5, 15, Game_Piece("ñ", 10, "#33F6FF"));
+    matrix.insert(0, 0, Game_Piece("a", 1, "#FF5733"), 1);
+    matrix.insert(2, 1, Game_Piece("b", 2, "#33F6FF"), 2);
+    matrix.insert(1, 2, Game_Piece("c", 3, "#FF33FF"), 3);
+    matrix.insert(0, 1, Game_Piece("d", 4, "#FF5733"), 2);
+    matrix.insert(20, 1, Game_Piece("e", 5, "#33F6FF"), 1);
+    matrix.insert(8, 8, Game_Piece("f", 8, "#33F6FF"), 3);
+    matrix.insert(5, 15, Game_Piece("ñ", 10, "#33F6FF"), 1);
+
+    /*
+    matrix.remove(2, 1);
+    matrix.remove(20, 1);
+    matrix.remove(0, 1);
+    */
     /*
     matrix.insert(1, 3, "dato5");
     matrix.insert(1, 2, "dato6");

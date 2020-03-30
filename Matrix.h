@@ -18,14 +18,16 @@ class Matrix
         Game_Piece data;
         int x;
         int y;
+        int multiplier;
 
     public:
         //Constructores del Node
-        Node(int x, int y, Game_Piece data){
+        Node(int x, int y, Game_Piece data, int multiplier){
             this->up = this->down= this->next = this->previous = 0;
             this->data = data;
             this->x = x;
             this->y = y;
+            this->multiplier = multiplier;
         }
 
         //Constructor vacio del Node
@@ -69,28 +71,16 @@ class Matrix
         string getNodesDOT(){
             string graph;
             string color;
-            int score = this->data.getScore();
-            switch (score) {
-            case 1:
-                color = "azure1";
-                break;
+            int multi = this->multiplier;
+            switch (multi) {
             case 2:
-                color = "darkorange1";
-                break;
-            case 3:
-                color = "goldenrod";
-                break;
-            case 4:
                 color = "deepskyblue";
                 break;
-            case 5:
+            case 3:
                 color = "aquamarine2";
                 break;
-            case 8:
-                color = "firebrick2";
-                break;
             default:
-                color = "darkorchid1";
+                color = "azure1";
                 break;
             }
             graph += "N" + to_string(this->x) + to_string(this->y) + "[label=\"" + this->data.getLetter() + "\", width=1.5, style=filled, fillcolor=" + color + ", group=" + to_string(this->x + 2) + "];\n";
@@ -159,12 +149,14 @@ class Matrix
         void setY(int n) {this->y = n;}
         int getX(){return x;}
         void setX(int n) {this->x = n;}
+        int getMultiplier(){return x;}
+        void setMultiplier(int n) {this->x = n;}
 
         ~Node(){}
     };
 
 private:
-    Node *root = new Node(-1, -1, Game_Piece("Root", 0, "0"));
+    Node *root = new Node(-1, -1, Game_Piece("Root", 0, "0"), 0);
     int size = 0;
 
     //Esta mierda se tiene que ir creando de forma dinamica :v
@@ -259,19 +251,20 @@ public:
 
     Node *createColumn(int x){
         Node *auxColumn = this->root;
-        Node *column = this->insertOrderColumn(new Node(x, -1, Game_Piece("Col", 0, "0")), auxColumn);
+        Node *column = this->insertOrderColumn(new Node(x, -1, Game_Piece("Col", 0, "0"), 0), auxColumn);
         return column;
     }
 
     Node *createRow(int y){
         Node *auxRow = this->root;
-        Node *row = this->insertOrderRow(new Node(-1, y, Game_Piece("Row", 0, "0")), auxRow);
+        Node *row = this->insertOrderRow(new Node(-1, y, Game_Piece("Row", 0, "0"), 0), auxRow);
         return row;
     }
 
 
-    void insert(int x, int y, Game_Piece data){
-        Node *n = new Node(x, y, data);
+    //Proceso de insertar en la matriz
+    void insert(int x, int y, Game_Piece data, int multiplier){
+        Node *n = new Node(x, y, data, multiplier);
         Node *column = this->search_Column(x);
         Node *row = this->search_Row(y);
 
@@ -282,7 +275,7 @@ public:
             row = this->createRow(y);
         }
         else if (!column && row) {
-            //Se crea columna
+            //Se crea columnaNULL
             column = this->createColumn(x);
         }
         else if (column && !row) {
@@ -295,6 +288,92 @@ public:
         n = this->insertOrderRow(n, column);
         this->size++;
     }
+
+    //Proceso de eliminar en la matriz
+
+    Game_Piece remove(int x, int y){
+        //Obtenemos las cabeceras
+        Node *column = this->search_Column(x);
+        Node *row = this->search_Row(y);
+        Game_Piece piece;
+
+        //Removemos de la columna
+        piece = removeOrderColumn(row, x);
+        //Removemos de la fila
+        piece = removeOrderRow(column, y);
+
+
+        //Si las cabeceras ya no tienen datos se eliminan
+        if (!column->getDown()) {
+            Node *prev = column->getPrevious();
+            if (!column->getNext()) {
+                prev->setNext(0);
+            }
+            else{
+                prev->setNext(column->getNext());
+                column->getNext()->setPrevious(prev);
+            }
+            delete column;
+        }
+
+        if (!row->getNext()) {
+            Node *up = row->getUp();
+            if (!column->getDown()) {
+                up->setDown(0);
+            }
+            else{
+                up->setDown(row->getDown());
+                row->getDown()->setUp(up);
+            }
+            delete row;
+        }
+        return piece;
+    }
+
+    Game_Piece removeOrderColumn(Node *row, int x){
+        Node *aux = row;
+        Game_Piece piece;
+        cout << to_string(x) << endl;
+        while (aux != NULL) {
+            if (aux->getX() == x) {
+                Node *prev = aux->getPrevious();
+                if(!aux->getNext()){
+                    prev->setNext(0);
+                }
+                else{
+                    prev->setNext(aux->getNext());
+                    aux->getNext()->setPrevious(prev);
+                }
+                piece = aux->getData();
+                break;
+            }
+            aux = aux->getNext();
+        }
+        return piece;
+    }
+
+    Game_Piece removeOrderRow(Node *column, int y){
+        Node *aux = column;
+        Game_Piece piece;
+
+        while (aux != NULL) {
+            if (aux->getY() == y) {
+                Node *up = aux->getUp();
+                if(!aux->getDown()){
+                    up->setDown(0);
+                }
+                else{
+                    up->setDown(aux->getDown());
+                    aux->getDown()->setUp(up);
+                }
+                piece = aux->getData();
+                break;
+            }
+            aux = aux->getDown();
+        }
+        return piece;
+    }
+
 
     //Obtiene el codigo DOT para formar el grafico
     void getDOT(){
@@ -385,7 +464,7 @@ public:
             }
         }
 
-        graph += "graph[label=\"Tablero del juego. \n Fichas 1pt: Azure, Fichas 2pts: Anaranjado, Fichas 3pts: Amarillo, Fichas 4pts: Celeste, \n Fichas 5pts: Menta, Fichas 8pts: Rojo, Fichas 10pts: Violeta\"];\n"
+        graph += "graph[label=\"Tablero del juego. \n Multiplicadores de XP: x1 - Azure, x2 - Celeste, x3 - Menta.\"];\n"
                  "}";
 
         ofstream file("Matrix.dot", ios::out);;

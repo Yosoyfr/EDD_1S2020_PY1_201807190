@@ -178,7 +178,7 @@ public:
         }
     }
 
-    //
+    //Elimina de una pos
     void remove(int pos){
         if(pos > this->size - 1 || pos < 0)
             return;
