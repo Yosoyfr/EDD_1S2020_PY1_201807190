@@ -13,6 +13,8 @@
 #include<DoubleCircularLIst.h>
 #include<DoubleLIst.h>
 
+#include<Matrix.h>
+
 #include <iostream>
 using namespace std;
 
@@ -23,84 +25,26 @@ int main(int argc, char *argv[])
 
     cout << "SCRABBLE++" << endl;
 
-    BinarySearchTree arbol;
-    arbol.insert(User("Heydi"));
-    arbol.insert(User("Carlos"));
-    arbol.insert(User("Antonio"));
-    arbol.insert(User("Eduardo"));
-    arbol.insert(User("Rodrigo"));
+    Matrix matrix;
+
+
+    matrix.insert(0, 0, Game_Piece("a", 1, "#FF5733"));
+    matrix.insert(2, 1, Game_Piece("b", 2, "#33F6FF"));
+    matrix.insert(1, 2, Game_Piece("c", 3, "#FF33FF"));
+    matrix.insert(0, 1, Game_Piece("d", 4, "#FF5733"));
+    matrix.insert(20, 1, Game_Piece("e", 5, "#33F6FF"));
+    matrix.insert(8, 8, Game_Piece("f", 8, "#33F6FF"));
+    matrix.insert(5, 15, Game_Piece("ñ", 10, "#33F6FF"));
     /*
-    arbol.insert(User("Jesus"));
-    arbol.insert(User("Francisco"));
-    arbol.insert(User("Zoila"));
+    matrix.insert(1, 3, "dato5");
+    matrix.insert(1, 2, "dato6");
+    matrix.insert(10, 20, "dato7");
+    matrix.insert(9, 19, "dato8");
     */
-    arbol.getDOT();
-    arbol.preOrderDOT();
-    arbol.postOrderDOT();
-    arbol.inOrderDOT();
-
-    //cout << arbol.getRoot()->getData().getName()<< endl;
-
-    DoubleCircularList listaC;
-    listaC.add("Hola");
-    listaC.add("Mundo");
-    listaC.add("Prueba");
-    listaC.add("Diccionario");
-    listaC.add("Feca");
-    listaC.add("Sexo");
-    listaC.add("ALV");
-    listaC.remove("Prueba");
-    listaC.getDOT();
-
-    Queue cola;
-    cola.enqueue(Game_Piece("D", 2, "#FF5733"));
-    cola.enqueue(Game_Piece("H", 3, "#33F6FF"));
-    cola.enqueue(Game_Piece("K", 1, "#FF33FF"));
-    cola.getDOT();
 
 
-    ScoreBoard board;
-
-    User fran = User("Francisco");
-    fran.addScore(20);
-    fran.addScore(54);
-    fran.addScore(28);
-    fran.addScore(39);
-    fran.getScore();
-
-    board.addOrderSB(fran);
-
-    User maria = User("Maria");
-    maria.addScore(48);
-    maria.addScore(12);
-    maria.addScore(56);
-
-    board.addOrderSB(maria);
-
-    User abel = User("Abel");
-    abel.addScore(8);
-    abel.addScore(98);
-    abel.addScore(59);
-
-    board.addOrderSB(abel);
-
-    board.getDOT();
-
-    DoubleList listaD;
-    listaD.addLast(Game_Piece("D", 2, "#FF5733"));
-    listaD.addLast(Game_Piece("H", 3, "#33F6FF"));
-    listaD.addLast(Game_Piece("H", 3, "#33F6FF"));
-    listaD.addLast(Game_Piece("K", 1, "#FF33FF"));
-    listaD.addLast(Game_Piece("D", 2, "#FF5733"));
-    listaD.addLast(Game_Piece("A", 2, "#FF5733"));
-
-    DoubleList listaH;
-    listaH.addLast(Game_Piece("J", 2, "#FF5733"));
-    listaH.addLast(Game_Piece("J", 3, "#33F6FF"));
-    listaH.addLast(Game_Piece("P", 3, "#33F6FF"));
-    listaH.addLast(Game_Piece("A", 2, "#FF5733"));
-
-    listaH.getDOT(listaD, listaH, abel.getName(), fran.getName());
+    matrix.print();
+    matrix.getDOT();
 
     return a.exec();
 }
