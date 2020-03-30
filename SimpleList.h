@@ -1,7 +1,6 @@
 #ifndef SIMPLELIST_H
 #define SIMPLELIST_H
 
-
 #include<iostream>
 #include <qdebug.h>
 #include <fstream>

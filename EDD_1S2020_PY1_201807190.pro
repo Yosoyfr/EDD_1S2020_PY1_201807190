@@ -29,6 +29,7 @@ HEADERS += \
     Matrix.h \
     Node.h \
     Objects.h \
+    PiecesList.h \
     Queue.h \
     ScoreBoard.h \
     SimpleList.h \

@@ -9,6 +9,7 @@
 
 #include<SimpleList.h>
 #include<ScoreBoard.h>
+#include<PiecesList.h>
 
 #include<DoubleCircularLIst.h>
 #include<DoubleLIst.h>
@@ -23,34 +24,58 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    cout << "SCRABBLE++" << endl;
+    //Vamos a inicializar la lista de fichas
+    PiecesList pieces;
+    for (int i = 0; i < 12; i++) {
+        pieces.addLast(Game_Piece("A", 1, "#2769AB"));
+        pieces.addLast(Game_Piece("E", 1, "#2FC25E"));
+    }
+    for (int i = 0; i < 9; i++) {
+        pieces.addLast(Game_Piece("O", 1, "#E4EE42"));
+    }
+    for (int i = 0; i < 6; i++) {
+        pieces.addLast(Game_Piece("I", 1, "#EEA242"));
+        pieces.addLast(Game_Piece("S", 1, "#EE6642"));
+    }
+    for (int i = 0; i < 5; i++) {
+        pieces.addLast(Game_Piece("N", 1, "#F91A1A"));
+        pieces.addLast(Game_Piece("R", 1, "#B9F91A"));
+        pieces.addLast(Game_Piece("U", 1, "#9CAD70"));
+        pieces.addLast(Game_Piece("D", 2, "#7083AD"));
+    }
+    for (int i = 0; i < 4; i++) {
+        pieces.addLast(Game_Piece("L", 1, "#AD70A1"));
+        pieces.addLast(Game_Piece("T", 1, "#F90505"));
+        pieces.addLast(Game_Piece("C", 3, "#05E3F9"));
+    }
+    for (int i = 0; i < 2; i++) {
+        pieces.addLast(Game_Piece("G", 2, "#1705F9"));
+        pieces.addLast(Game_Piece("B", 3, "#A005F9"));
+        pieces.addLast(Game_Piece("M", 3, "#F905BA"));
+        pieces.addLast(Game_Piece("P", 3, "#50994B"));
+        pieces.addLast(Game_Piece("H", 4, "#FFD500"));
+    }
+    pieces.addLast(Game_Piece("F", 4, "#FFD500"));
+    pieces.addLast(Game_Piece("V", 4, "#FFD500"));
+    pieces.addLast(Game_Piece("Y", 4, "#FFD500"));
+    pieces.addLast(Game_Piece("Q", 5, "#FFD500"));
+    pieces.addLast(Game_Piece("J", 8, "#FFD500"));
+    pieces.addLast(Game_Piece("Ñ", 8, "#FFD500"));
+    pieces.addLast(Game_Piece("X", 8, "#FFD500"));
+    pieces.addLast(Game_Piece("Z", 10, "#FFD500"));
 
-    Matrix matrix;
-
-
-    matrix.insert(0, 0, Game_Piece("a", 1, "#FF5733"), 1);
-    matrix.insert(2, 1, Game_Piece("b", 2, "#33F6FF"), 2);
-    matrix.insert(1, 2, Game_Piece("c", 3, "#FF33FF"), 3);
-    matrix.insert(0, 1, Game_Piece("d", 4, "#FF5733"), 2);
-    matrix.insert(20, 1, Game_Piece("e", 5, "#33F6FF"), 1);
-    matrix.insert(8, 8, Game_Piece("f", 8, "#33F6FF"), 3);
-    matrix.insert(5, 15, Game_Piece("ñ", 10, "#33F6FF"), 1);
-
+    cout << to_string(pieces.getSize()) << endl;
     /*
-    matrix.remove(2, 1);
-    matrix.remove(20, 1);
-    matrix.remove(0, 1);
+    int num;
+    srand(time(NULL));
+    int c = 10;
+    for (int i = 0; i < 15; i++) {
+        num = 1 + rand() %c;
+        cout << to_string(num) << endl;
+        if(c > 1)
+            c--;
+    }
     */
-    /*
-    matrix.insert(1, 3, "dato5");
-    matrix.insert(1, 2, "dato6");
-    matrix.insert(10, 20, "dato7");
-    matrix.insert(9, 19, "dato8");
-    */
-
-
-    matrix.print();
-    matrix.getDOT();
 
     return a.exec();
 }
