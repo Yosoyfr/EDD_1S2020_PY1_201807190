@@ -65,23 +65,27 @@ public:
     }
 
     //Remueve el primer elemento de la lista
-    void removeFirst(){
+    Game_Piece removeFirst(){
+        Game_Piece piece;
         if(!isEmpty()){
             Node *aux = this->first;
+            piece = aux->getPiece();
             this->first = this->first->getNext();
             delete aux;
             size--;
         }
+        return piece;
     }
 
       //Remueve el ultimo elemento de la lista
-    void removeLast(){
+    Game_Piece removeLast(){
+        Game_Piece piece;
         if(!this->first->getNext())
             removeFirst();
         else if(!isEmpty()){
             Node *aux, *prev;
             aux = this->first;
-
+            piece = this->last->getPiece();
             while (aux->getNext()) {
                 prev = aux;
                 aux = aux->getNext();
@@ -91,28 +95,31 @@ public:
             delete aux;
             size--;
         }
+        return piece;
     }
 
     //Elimina de una pos
-    void remove(int pos){
-        if(pos > this->size - 1 || pos < 0)
-            return;
+    Game_Piece remove(int pos){
+        Game_Piece piece;
+        if(pos > this->size - 1 || pos < 0){
+        }
         else if (pos == 0)
-            removeFirst();
+            piece = removeFirst();
         else if (pos == this->size - 1)
-            removeLast();
+            piece = removeLast();
         else if(!isEmpty()){
             Node *aux, *prev;
             aux = this->first;
-
             for(int i = 0; i < pos; i++){
                 prev = aux;
                 aux = aux->getNext();
             }
+            piece = aux->getPiece();
             prev->setNext(aux->getNext());
             delete aux;
             size--;
         }
+        return piece;
     }
 
     // Metodo para imprimir los nodos de la lista

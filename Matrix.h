@@ -18,16 +18,16 @@ class Matrix
         Game_Piece data;
         int x;
         int y;
-        int multiplier;
+        int multiplierXP;
 
     public:
         //Constructores del Node
-        Node(int x, int y, Game_Piece data, int multiplier){
+        Node(int x, int y, Game_Piece data, int multiplierXP){
             this->up = this->down= this->next = this->previous = 0;
             this->data = data;
             this->x = x;
             this->y = y;
-            this->multiplier = multiplier;
+            this->multiplierXP = multiplierXP;
         }
 
         //Constructor vacio del Node
@@ -71,7 +71,7 @@ class Matrix
         string getNodesDOT(){
             string graph;
             string color;
-            int multi = this->multiplier;
+            int multi = this->multiplierXP;
             switch (multi) {
             case 2:
                 color = "deepskyblue";
@@ -149,8 +149,8 @@ class Matrix
         void setY(int n) {this->y = n;}
         int getX(){return x;}
         void setX(int n) {this->x = n;}
-        int getMultiplier(){return x;}
-        void setMultiplier(int n) {this->x = n;}
+        int getMultiplierXP(){return multiplierXP;}
+        void setMultiplierXP(int n) {this->multiplierXP = n;}
 
         ~Node(){}
     };
@@ -159,7 +159,6 @@ private:
     Node *root = new Node(-1, -1, Game_Piece("Root", 0, "0"), 0);
     int size = 0;
 
-    //Esta mierda se tiene que ir creando de forma dinamica :v
 public:
 
     Node *search_Row(int y){

@@ -64,18 +64,19 @@ int main(int argc, char *argv[])
     pieces.addLast(Game_Piece("X", 8, "#FFD500"));
     pieces.addLast(Game_Piece("Z", 10, "#FFD500"));
 
-    cout << to_string(pieces.getSize()) << endl;
-    /*
-    int num;
-    srand(time(NULL));
-    int c = 10;
-    for (int i = 0; i < 15; i++) {
-        num = 1 + rand() %c;
-        cout << to_string(num) << endl;
-        if(c > 1)
-            c--;
+    //Proceso para almacenar en la cola las letras al azar
+    Queue pieces_in_game;
+
+    while (pieces.getSize() > 0) {
+        int num;
+        srand(time(NULL));
+        num = rand() %pieces.getSize();
+        Game_Piece pieza =  pieces.remove(num);
+        pieces_in_game.enqueue(pieza);
+        //cout << to_string(num) + " - " + to_string(pieces.getSize()) + " - " + pieza.getLetter() << endl;
     }
-    */
+
+    pieces_in_game.getDOT();
 
     return a.exec();
 }
