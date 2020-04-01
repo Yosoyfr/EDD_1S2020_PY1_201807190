@@ -95,6 +95,7 @@ public:
             aux = this->first;
             piece = this->last->getPiece();
             while (aux->getNext()) {
+
                 prev = aux;
                 aux = aux->getNext();
             }
@@ -152,6 +153,20 @@ public:
             cout << aux->getPiece().getLetter() << endl;
             aux = aux->getNext();
         }
+    }
+
+    // Metodo que retorna el valor del multiplicador
+    int multiplierXP(int x, int y){
+        Node *aux = this->first;
+        int xp = 1;
+        while (aux) {
+            if (aux->getSquare().getX() == x && aux->getSquare().getY() == y) {
+                xp = aux->getSquare().getMultiplier();
+                break;
+            }
+            aux = aux->getNext();
+        }
+        return xp;
     }
 
     //Retorna el tamaño de la lista

@@ -79,10 +79,10 @@ int jsonDimension(QJsonObject jsonObject){
     return jsonObject.value(QStringLiteral("dimension")).toInt();
 }
 
-int modules(){
+string modules(){
     //Bienvenida de la terminal
     string instructions[5] = {"Lectura de archivo JSON", "Registrar usuarios", "Jugar una partida", "Reportes", "Salir"};
-    int select = 0;
+    string select;
     for (int i = 0; i < 5; ++i) {
         cout << to_string(i) + " - " + instructions[i] << endl;
     }
@@ -101,6 +101,7 @@ string reports(){
     for (int i = 0; i < 7; ++i) {
         cout << to_string(i) + " - " + instructions[i] + " del juego." << endl;
     }
+    cout << "Opcion: ";
     cin >> select;
     return select;
 }
@@ -108,6 +109,11 @@ string reports(){
 User registerUser(string username){
     return  User(username);
 }
+
+void alert(string error){
+    cout << "!! Alert: " + error + " !!" << endl;
+}
+
 
 
 int main(int argc, char *argv[])
@@ -129,13 +135,29 @@ int main(int argc, char *argv[])
     //Scoreboard del juego
     ScoreBoard scoreboard;
 
-    int c = 0;
-    while (c != 4) {
+    //Inicializamos algunas cosas para poder jugar tranquilo
+    dictionary.add("Hola");
+    dictionary.add("Mundo");
+    dictionary.add("Prueba");
+    dictionary.add("Diccionario");
+    dictionary.add("Feca");
+
+    users.insert(registerUser("Yosoyfr"));
+    users.insert(registerUser("Mamba"));
+    users.insert(registerUser("Tfue"));
+    users.insert(registerUser("Ninja"));
+    users.insert(registerUser("a"));
+    users.insert(registerUser("b"));
+    dimension = 20;
+
+    string c;
+    while (c != "4") {
         cout << "Scrabble++\n" << endl;
         c = modules();
-        if (c == 0) {
+        if (c == "0") {
+            cout << "\n##### Modulo de Lectura de archivo JSON #####" << endl;
             //Proceso de lectura del archivo JSON
-            cout << "\nSi el archivo JSON se encuentra en la carpeta del proyecto, escribe solo el nombre del archivo, si no escribe la ruta completa." << endl;
+            cout << "Si el archivo JSON se encuentra en la carpeta del proyecto, escribe solo el nombre del archivo, si no escribe la ruta completa." << endl;
             string route = "";
             cin >> route;
             QJsonObject jsonObject = jsonReading(route.c_str());
@@ -145,10 +167,10 @@ int main(int argc, char *argv[])
             dictionary = jsonDictionary(jsonObject);
             cout << "Dimension establecida: " + to_string(dimension) << endl;
         }
-        else if (c == 1) {
+        else if (c == "1") {
             //Proceso para insertar usuarios
             while (1) {
-                cout << "\nModulo de registro de usuarios" << endl;
+                cout << "\n##### Modulo de registro de usuarios #####" << endl;
                 cout << "Escriba el username del usuario: ";
                 string username;
                 cin >> username;
@@ -159,6 +181,7 @@ int main(int argc, char *argv[])
                         "Si - cualquier cosa\n";
 
                 string select;
+                cout << "Opcion: ";
                 cin >> select;
                 if (select == "0") {
                     cout << "\n";
@@ -166,68 +189,180 @@ int main(int argc, char *argv[])
                 }
             }
         }
-        else if (c == 2) {
-            cout << "\n";
-            users.inOrder();
+        else if (c == "2") {
             //Modulo de jugar
-            //Vamos a inicializar la lista de fichas
-            PiecesList pieces;
-            for (int i = 0; i < 12; i++) {
-                pieces.addLast(Game_Piece("A", 1, "#2769AB"));
-                pieces.addLast(Game_Piece("E", 1, "#2FC25E"));
-            }
-            for (int i = 0; i < 9; i++) {
-                pieces.addLast(Game_Piece("O", 1, "#E4EE42"));
-            }
-            for (int i = 0; i < 6; i++) {
-                pieces.addLast(Game_Piece("I", 1, "#EEA242"));
-                pieces.addLast(Game_Piece("S", 1, "#EE6642"));
-            }
-            for (int i = 0; i < 5; i++) {
-                pieces.addLast(Game_Piece("N", 1, "#F91A1A"));
-                pieces.addLast(Game_Piece("R", 1, "#B9F91A"));
-                pieces.addLast(Game_Piece("U", 1, "#9CAD70"));
-                pieces.addLast(Game_Piece("D", 2, "#7083AD"));
-            }
-            for (int i = 0; i < 4; i++) {
-                pieces.addLast(Game_Piece("L", 1, "#AD70A1"));
-                pieces.addLast(Game_Piece("T", 1, "#F90505"));
-                pieces.addLast(Game_Piece("C", 3, "#05E3F9"));
-            }
-            for (int i = 0; i < 2; i++) {
-                pieces.addLast(Game_Piece("G", 2, "#1705F9"));
-                pieces.addLast(Game_Piece("B", 3, "#A005F9"));
-                pieces.addLast(Game_Piece("M", 3, "#F905BA"));
-                pieces.addLast(Game_Piece("P", 3, "#50994B"));
-                pieces.addLast(Game_Piece("H", 4, "#FFD500"));
-            }
-            pieces.addLast(Game_Piece("F", 4, "#FFD500"));
-            pieces.addLast(Game_Piece("V", 4, "#FFD500"));
-            pieces.addLast(Game_Piece("Y", 4, "#FFD500"));
-            pieces.addLast(Game_Piece("Q", 5, "#FFD500"));
-            pieces.addLast(Game_Piece("J", 8, "#FFD500"));
-            pieces.addLast(Game_Piece("Ñ", 8, "#FFD500"));
-            pieces.addLast(Game_Piece("X", 8, "#FFD500"));
-            pieces.addLast(Game_Piece("Z", 10, "#FFD500"));
+            cout << "\n##### Modulo de juego. Usuarios: " + to_string(users.getSize()) + " #####\n"<< endl;
 
-            //Proceso para almacenar en la cola las letras al azar
-            Queue pieces_in_game;
+            //El juego debe tener por lo menos dos jugadores
+            if (users.getSize() >= 2 && dictionary.getSize() > 0 && dimension > 0) {
 
-            while (pieces.getSize() > 0) {
-                int num;
-                srand(time(NULL));
-                num = rand() %pieces.getSize();
-                Game_Piece pieza =  pieces.remove(num);
-                pieces_in_game.enqueue(pieza);
+                //Vamos a inicializar la lista de fichas
+                PiecesList pieces;
+                for (int i = 0; i < 12; i++) {
+                    pieces.addLast(Game_Piece("a", 1, "#2769AB"));
+                    pieces.addLast(Game_Piece("e", 1, "#2FC25E"));
+                }
+                for (int i = 0; i < 9; i++) {
+                    pieces.addLast(Game_Piece("o", 1, "#E4EE42"));
+                }
+                for (int i = 0; i < 6; i++) {
+                    pieces.addLast(Game_Piece("i", 1, "#EEA242"));
+                    pieces.addLast(Game_Piece("s", 1, "#EE6642"));
+                }
+                for (int i = 0; i < 5; i++) {
+                    pieces.addLast(Game_Piece("n", 1, "#F91A1A"));
+                    pieces.addLast(Game_Piece("r", 1, "#B9F91A"));
+                    pieces.addLast(Game_Piece("u", 1, "#9CAD70"));
+                    pieces.addLast(Game_Piece("d", 2, "#7083AD"));
+                }
+                for (int i = 0; i < 4; i++) {
+                    pieces.addLast(Game_Piece("l", 1, "#AD70A1"));
+                    pieces.addLast(Game_Piece("t", 1, "#F90505"));
+                    pieces.addLast(Game_Piece("c", 3, "#05E3F9"));
+                }
+                for (int i = 0; i < 2; i++) {
+                    pieces.addLast(Game_Piece("g", 2, "#1705F9"));
+                    pieces.addLast(Game_Piece("b", 3, "#A005F9"));
+                    pieces.addLast(Game_Piece("m", 3, "#F905BA"));
+                    pieces.addLast(Game_Piece("p", 3, "#50994B"));
+                    pieces.addLast(Game_Piece("h", 4, "#FFD500"));
+                }
+                pieces.addLast(Game_Piece("f", 4, "#FFD500"));
+                pieces.addLast(Game_Piece("v", 4, "#FFD500"));
+                pieces.addLast(Game_Piece("y", 4, "#FFD500"));
+                pieces.addLast(Game_Piece("q", 5, "#FFD500"));
+                pieces.addLast(Game_Piece("j", 8, "#FFD500"));
+                pieces.addLast(Game_Piece("ñ", 8, "#FFD500"));
+                pieces.addLast(Game_Piece("x", 8, "#FFD500"));
+                pieces.addLast(Game_Piece("z", 10, "#FFD500"));
+
+                //Proceso para almacenar en la cola las letras al azar
+                Queue pieces_in_game;
+
+                while (pieces.getSize() > 0) {
+                    int num;
+                    srand(time(NULL));
+                    num = rand() %pieces.getSize();
+                    Game_Piece pieza =  pieces.remove(num);
+                    pieces_in_game.enqueue(pieza);
+                }
+
+                pieces_in_game.getDOT();
+                dictionary.getDOT();
+
+                //Proceso para solicitar los jugadores a jugar la partida
+                cout << "Jugadores disponibles: ";
+                users.inOrder();
+
+                //Seleccion del jugador 1
+                Node *player1 = 0;
+                while (!player1) {
+                    cout << endl << "Escriba el username del Jugador 1: ";
+                    string j;
+                    cin >> j;
+                    player1 = users.search(users.getRoot(), j);
+                    if (!player1) {
+                        alert("El usuario no fue encontrado");
+                    }
+                }
+                cout << "El usuario encontrado fue: " + player1->getData().getName() + " -> Jugador 1."<< endl;
+
+                //Seleccion del jugador 2
+                Node *player2 = 0;
+                while (!player2 || player2 == player1) {
+                    cout << endl << "Escriba el username del Jugador 2: ";
+                    string j;
+                    cin >> j;
+                    player2 = users.search(users.getRoot(), j);
+                    if (!player2) {
+                        alert("El usuario no fue encontrado");
+                    }
+                    else if (player2 == player1) {
+                        alert("El Jugador 2 no puede ser el mismo que le jugador 1");
+                    }
+                }
+                cout << "El usuario encontrado fue: " + player2->getData().getName() + " -> Jugador 2.\n"<< endl;
+
+                //Ya seleccionados los dos jugadores, se procede con el juego
+
+                //Se le daran fichas a los jugadores
+                //Lista para el jugador 1
+                DoubleList p1;
+                for (int i = 0; i < 7; ++i) {
+                    p1.addLast(pieces_in_game                .dequeue());
+                }
+
+                //Lista para el jugador 2
+                DoubleList p2;
+                for (int i = 0; i < 7; ++i) {
+                    p2.addLast(pieces_in_game.dequeue());
+                }
+
+                //Proceso de juego por turnos
+                while (1) {
+                    cout << "Turno del jugador: " << endl;
+                    p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                    pieces_in_game.getDOT();
+                    SquaresXP squareAux = board.insertPiece(dimension, squaresXP);
+                    cin.get();
+                    cout << "Ingrese la letra a insertar: ";
+                    char letter = cin.get();;
+                    string auxL;
+                    auxL += letter;
+                    cout << "La letra ingresda es: " + auxL << endl;
+                    Game_Piece piece = p1.remove(auxL);
+                    cout << endl;
+                }
+
             }
-            pieces_in_game.getDOT();
-            dictionary.getDOT();
+            else if (dictionary.getSize() == 0) {
+                alert("El juego no cuenta con un diccionario");
+            }
+            else if (dimension == 0) {
+                alert("El tablero no contiene una dimension relativa");
+            }
+            else{
+                alert("El juego no cuenta con los jugadores suficientes para poder iniciar una partida");
+            }
 
             cout << "\n";
         }
-        else if(c == 3){
+        else if(c == "3"){
             //Reportes
             string select = reports();
+
+            if (select == "0") {
+                //Mostrar el diccionario de palabras
+                dictionary.getDOT();
+            }
+            else if (select == "1") {
+                //Mostrar ABB de usuarios
+                users.getDOT();
+            }
+            else if (select == "2") {
+                //Mostrar recorrido  Preorden
+                users.preOrderDOT();
+            }
+            else if (select == "3") {
+                //Mostrar el recorrido Inorden
+                users.inOrderDOT();
+            }
+            else if (select == "4") {
+                //Mostrar el recorrido Postorden
+                users.postOrderDOT();
+            }
+            else if (select == "5") {
+                //Mostrar historial de puntajes por un usuario
+
+            }
+            else if (select == "6") {
+                //Mostrar el scoreboard
+                scoreboard.getDOT();
+            }
+            else{
+                cout << "Ingrese una opcion valida" << endl;
+                select = reports();
+            }
             cout << "\n";
         }
     }

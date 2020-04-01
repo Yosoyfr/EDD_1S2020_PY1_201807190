@@ -3,7 +3,10 @@
 
 #include<QDebug>
 #include<Objects.h>
+#include<PiecesList.h>
 #include<iostream>
+#include<iomanip>
+
 using namespace  std;
 
 class Matrix
@@ -477,31 +480,45 @@ public:
         system("dot -Tpng Matrix.dot -o Matrix.png");
     }
 
-
-    void print(){
-        Node *aux = this->root;
-
-        /*
-        cout << "Columnas" << endl;
-        while (aux) {
-            cout << "x: " + to_string(aux->getX()) + " y: " + to_string(aux->getY()) + " data: " + aux->getData() << endl;
-            aux = aux->getNext();
-        }
-        aux = this->root;
-        cout << "Filas" << endl;
-        */
-        while (aux) {
-            //cout << "x: " + to_string(aux->getX()) + " y: " + to_string(aux->getY()) + " data: " + aux->getData() << endl;
-            Node *temp = aux;
-            while (temp) {
-                cout << "x: " + to_string(temp->getX()) + " y: " + to_string(temp->getY()) + " data: " + temp->getData().getLetter() << endl;
-                temp = temp->getNext();
-            }
-            aux = aux->getDown();
-        }
+    void alert(string error){
+        cout << "!! Alert: " + error + " !!" << endl;
     }
 
+    SquaresXP insertPiece(int dimension, PiecesList squaresXP){
+        int x = -1;
+        while (x < 0 || x > dimension ) {
+            cout << "Ingrese la coordenada en X:";
+            cin >> x;
+            if (x < 0) {
+                alert("No se permiten numeros menonres a 0");
+            }
+            else if (x > dimension) {
+                alert("No se permiten numeros mayores a " + to_string(dimension));
+            }
+        }
 
+        int y = -1;
+        while (y < 0 || y > dimension ) {
+            cout << "Ingrese la coordenada en Y:";
+            cin >> y;
+            if (y < 0) {
+                alert("No se permiten numeros menonres a 0");
+            }
+            else if (y > dimension) {
+                alert("No se permiten numeros mayores a " + to_string(dimension));
+            }
+        }
+
+        cout << "La coordenada en X es: " + to_string(x) << endl;
+        cout << "La coordenada en Y es: " + to_string(x) << endl;
+
+        SquaresXP piece;
+        piece = SquaresXP(x, y, squaresXP.multiplierXP(x, y));
+
+        return piece;
+    }
+
+    ~Matrix(){};
     int getSize(){return this->size;}
 };
 #endif // MATRIX_H

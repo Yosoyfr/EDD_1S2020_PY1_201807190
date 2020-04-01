@@ -14,16 +14,18 @@ class BinarySearchTree{
 
 protected:
     Node *root;
-    Node *aux;
+    int size;
 public:
     //Constructor vacio del arbol
     BinarySearchTree(){
         this->root = 0;
+        this->size = 0;
     }
 
     //Constructor del arbol, asignando el valor que recibira la raiz
     BinarySearchTree(Node *root){
         this->root = root;
+        this->size = 0;
     }
 
     bool isEmpty(){
@@ -55,12 +57,12 @@ public:
     }
 
     //Metodo para buscar algun nodo del arbol
-    Node *search(Node *rootAux, User dataSearch){
-        if (rootAux == 0)
-                 return 0;
-        else if (dataSearch.getName().compare(rootAux->getData().getName()) == 0)
-                 return this->root;
-        else if (dataSearch.getName().compare(rootAux->getData().getName()) == -1)
+    Node *search(Node *rootAux, string dataSearch){
+        if (rootAux == NULL)
+            return 0;
+        else if (dataSearch.compare(rootAux->getData().getName()) == 0)
+                 return rootAux;
+        else if (dataSearch.compare(rootAux->getData().getName()) == -1)
                  return search(rootAux->getLeft(), dataSearch);
         else
                  return search(rootAux->getRight(), dataSearch);
@@ -75,6 +77,7 @@ public:
         if (rootAux == NULL){
             rootAux = new Node(data);
             cout << "Registro exitoso" << endl;
+            this->size++;
         }
         else if (data.getName().compare(rootAux->getData().getName()) < 0){
             Node *leftAux = insert(rootAux->getLeft(), data);
@@ -168,8 +171,8 @@ public:
     //Accesores y modificadores de los atributos del nodo
     Node *getRoot(){return root;}
     void setRoot(Node *n) {this->root = n;}
-    Node *getAux(){return aux;}
-    void setAux(Node *n) {this->aux = n;}
+    int getSize(){return size;}
+
 };
 
 #endif // BINARYSEARCHTREE_H

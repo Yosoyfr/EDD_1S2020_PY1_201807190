@@ -47,6 +47,7 @@ public:
     //Constructor del objeto Lista doble
     DoubleList(){
         this->first = this->last = 0;
+        this->size = 0;
     }
 
     //Verifica si la lista esta vacia
@@ -93,9 +94,11 @@ public:
 
 
     //Metodo para eliminar datos de la lista
-    void remove(string letter){
+    Game_Piece remove(string letter){
         Node *aux = search(letter);
+        Game_Piece piece;
         if (aux){
+            piece = aux->getData();
             if (aux == this->first){
                 this->first = this->first->getNext();
                 this->first->setPrevious(0);
@@ -110,7 +113,9 @@ public:
                 aux->getNext()->setPrevious(prev);
             }
             delete aux;
+            this->size--;
         }
+        return piece;
     }
 
     void showData() {
@@ -164,7 +169,7 @@ public:
             }
             graph += "node1 -> node0;\n";
         }
-        graph += "graph[label=\"Jugador 1: " + username2 +".\"];\n"
+        graph += "graph[label=\"Jugador 1: " + username1 +".\"];\n"
                  "}\n";
 
 
@@ -198,7 +203,7 @@ public:
             }
             graph += "node" + to_string(y) +  " -> node" + to_string(y - 1) +  ";\n";
         }
-        graph += "graph[label=\"Jugador 2: " + username1 +".\"];\n"
+        graph += "graph[label=\"Jugador 2: " + username2 +".\"];\n"
                  "}\n";
 
 

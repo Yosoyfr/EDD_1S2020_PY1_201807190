@@ -83,7 +83,7 @@ public:
     }
 
     void visit(){
-        cout << "<" + getData().getName() + "> " << endl;
+        cout << "<" + getData().getName() + "> ";
     }
 
     //Los mismo metodos de arriba, solo que para obtener el dot
