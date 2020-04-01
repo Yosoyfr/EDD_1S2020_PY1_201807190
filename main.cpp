@@ -16,8 +16,64 @@
 
 #include<Matrix.h>
 
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
+
 #include <iostream>
 using namespace std;
+
+QJsonObject jsonReading(QString filename){
+    QFile file;
+    QString values;
+    file.setFileName(filename);
+    file.open(QIODevice::ReadOnly|QIODevice::Text);
+    values = file.readAll();
+    file.close();
+    QJsonDocument doc = QJsonDocument::fromJson(values.toUtf8());
+    return doc.object();
+}
+
+DoubleCircularList jsonDictionary(QJsonObject jsonObject){
+
+    DoubleCircularList dictionary;
+    QJsonArray dictionaryAux = jsonObject["diccionario"].toArray();
+    foreach (const QJsonValue & value, dictionaryAux) {
+        QJsonObject obj = value.toObject();
+        QString aux = obj.value(QStringLiteral("palabra")).toString();
+        string word = aux.toStdString();
+        dictionary.add(word);
+    }
+    return dictionary;
+}
+
+PiecesList jsonSquares(QJsonObject jsonObject){
+    PiecesList squaresXP;
+    QJsonObject squares = jsonObject["casillas"].toObject();
+    QJsonArray double_squares = squares["dobles"].toArray();
+    QJsonArray triple_squares = squares["triples"].toArray();
+
+    foreach (const QJsonValue & value, double_squares) {
+        QJsonObject obj = value.toObject();
+        int x = obj.value(QStringLiteral("x")).toInt();
+        int y = obj.value(QStringLiteral("y")).toInt();
+        squaresXP.addLast(SquaresXP(x, y, 2));
+    }
+
+    foreach (const QJsonValue & value, triple_squares) {
+        QJsonObject obj = value.toObject();
+        int x = obj.value(QStringLiteral("x")).toInt();
+        int y = obj.value(QStringLiteral("y")).toInt();
+        squaresXP.addLast(SquaresXP(x, y, 3));
+    }
+    return squaresXP;
+}
+
+int jsonDimension(QJsonObject jsonObject){
+    return jsonObject.value(QStringLiteral("dimension")).toInt();
+}
 
 
 int main(int argc, char *argv[])
@@ -73,10 +129,18 @@ int main(int argc, char *argv[])
         num = rand() %pieces.getSize();
         Game_Piece pieza =  pieces.remove(num);
         pieces_in_game.enqueue(pieza);
-        //cout << to_string(num) + " - " + to_string(pieces.getSize()) + " - " + pieza.getLetter() << endl;
     }
-
     pieces_in_game.getDOT();
 
+    //Proceso de lectura del archivo JSON
+    QJsonObject jsonObject = jsonReading("prueba.json");
+
+    int dimension = jsonDimension(jsonObject);
+    PiecesList squaresXP = jsonSquares(jsonObject);
+    DoubleCircularList dictionary = jsonDictionary(jsonObject);
+
+    cout << "Dimension: " + to_string(dimension) << endl;
+
+    dictionary.getDOT();
     return a.exec();
 }

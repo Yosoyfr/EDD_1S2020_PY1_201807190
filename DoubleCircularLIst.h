@@ -54,6 +54,7 @@ public:
     //Constructor del objeto Lista doble circular
     DoubleCircularList(){
         this->first = this->last = 0;
+        this->size = 0;
     }
 
     //Verifica si la lista esta vacia
@@ -78,7 +79,7 @@ public:
             this->first->setPrevious(this->last);
             this->last = this->first;
         }
-        size++;
+        this->size++;
     }
 
     //Busca un nodo a partir de la palabra
@@ -151,6 +152,8 @@ public:
 
         system("dot -Tpng Diccionario.dot -o Diccionario.png");
     }
+
+    int getSize(){return size;}
 
 };
 

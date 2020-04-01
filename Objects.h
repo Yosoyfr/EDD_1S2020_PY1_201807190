@@ -42,13 +42,13 @@ private:
     int score;
     string color;
 public:
-    //Constructor del objeto Game_Tab
+    //Constructor del objeto Game_Piece
     Game_Piece(string letter, int score, string color){
         this->letter = letter;
         this->score = score;
         this->color = color;
     }
-    //Constructor vacio del user
+    //Constructor vacio del Game_Piece
     Game_Piece(){}
 
     //Accesores y modificadores del objeto
@@ -60,6 +60,29 @@ public:
     void setScore(int newScore){this->score = newScore;}
 
     ~Game_Piece(){}
+};
+
+class SquaresXP{
+private:
+    int x;
+    int y;
+    int multiplier;
+public:
+    //Constructor del objeto SquaresXP
+    SquaresXP(int x, int y, int multiplier){
+        this->x = x;
+        this->y = y;
+        this->multiplier = multiplier;
+    }
+    //Constructor vacio del SquareXP
+    SquaresXP(){}
+
+    //Accesores  del objeto
+    int getX(){return x;}
+    int getY(){return y;}
+    int getMultiplier(){return multiplier;}
+
+    ~SquaresXP(){}
 };
 
 #endif // OBJECTS_H

@@ -10,15 +10,22 @@ class PiecesList{
 
     class Node{
     private:
-        //Atributos del nodo para una lista simple para el puntaje por jugador
+        //Atributos del nodo
         Node *next;
         Game_Piece piece;
+        SquaresXP square;
 
     public:
         //Constructores del nodo para la pieza
         Node(Game_Piece piece){
             this->next = 0;
             this->piece = piece;
+        }
+
+        //Constructores del nodo para la pieza
+        Node(SquaresXP square){
+            this->next = 0;
+            this->square = square;
         }
 
         //Constructor vacio del nodo
@@ -29,6 +36,7 @@ class PiecesList{
         void setNext(Node *n) {this->next = n;}
         Game_Piece getPiece(){return piece;}
         void setPiece(Game_Piece n) {this->piece = n;}
+        SquaresXP getSquare(){return square;}
 
         ~Node(){}
     };
@@ -120,6 +128,20 @@ public:
             size--;
         }
         return piece;
+    }
+
+    //Inserta datos a la lista, por el final
+    void addLast(SquaresXP square){
+        Node *n = new Node(square);
+         if(isEmpty()){
+             this->first = n;
+             this->last = n;
+         }
+         else{
+             this->last->setNext(n);
+             this->last = n;
+         }
+         size++;
     }
 
     // Metodo para imprimir los nodos de la lista
