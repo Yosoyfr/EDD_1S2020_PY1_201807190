@@ -72,18 +72,20 @@ public:
     }
 
     Node *insert(Node *rootAux, User data){
-        if (rootAux == 0)
-                 rootAux = new Node(data);
-        else if (data.getName().compare(rootAux->getData().getName()) == -1){
+        if (rootAux == NULL){
+            rootAux = new Node(data);
+            cout << "Registro exitoso" << endl;
+        }
+        else if (data.getName().compare(rootAux->getData().getName()) < 0){
             Node *leftAux = insert(rootAux->getLeft(), data);
             rootAux->setLeft(leftAux);
         }
-        else if (data.getName().compare(rootAux->getData().getName()) == 1){
+        else if (data.getName().compare(rootAux->getData().getName()) > 0){
             Node *rightAux = insert(rootAux->getRight(), data);
             rootAux->setRight(rightAux);
         }
-        else
-                 cout << "Ya existe este user" << endl;
+        else if (data.getName().compare(rootAux->getData().getName()) == 0)
+            cout << "Ya existe este username" << endl;
         return rootAux;
     }
 

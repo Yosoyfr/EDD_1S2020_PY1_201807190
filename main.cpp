@@ -86,8 +86,27 @@ int modules(){
     for (int i = 0; i < 5; ++i) {
         cout << to_string(i) + " - " + instructions[i] << endl;
     }
+    cout << "Opcion: ";
     cin >> select;
     return select;
+}
+
+string reports(){
+    //Modulo de reportes
+    cout << "\nModulo de reportes del juego." << endl;
+    string instructions[7] = {"Diccionario de palabras", "ABB de usarios", "Recorrido PreOrden del ABB de usuarios",
+                              "Recorrido InOrden del ABB de usuarios", "Recorrido PostOrden del ABB de usuarios",
+                              "Historial de putanjes por un usario", "ScoreBoard"};
+    string select;
+    for (int i = 0; i < 7; ++i) {
+        cout << to_string(i) + " - " + instructions[i] + " del juego." << endl;
+    }
+    cin >> select;
+    return select;
+}
+
+User registerUser(string username){
+    return  User(username);
 }
 
 
@@ -102,7 +121,13 @@ int main(int argc, char *argv[])
     int dimension = 0;
 
     //Arbol de usuarios
-    BinarySearchTree user;
+    BinarySearchTree users;
+
+    //Matriz: tablero del juego
+    Matrix board;
+
+    //Scoreboard del juego
+    ScoreBoard scoreboard;
 
     int c = 0;
     while (c != 4) {
@@ -118,13 +143,32 @@ int main(int argc, char *argv[])
             dimension = jsonDimension(jsonObject);
             squaresXP = jsonSquares(jsonObject);
             dictionary = jsonDictionary(jsonObject);
-            //cout << "Dimension: " + to_string(dimension) << endl;
+            cout << "Dimension establecida: " + to_string(dimension) << endl;
         }
         else if (c == 1) {
             //Proceso para insertar usuarios
+            while (1) {
+                cout << "\nModulo de registro de usuarios" << endl;
+                cout << "Escriba el username del usuario: ";
+                string username;
+                cin >> username;
+                users.insert(registerUser(username));
 
+                cout << "\nDesea ingresar otro usuario?\n"
+                        "No - 0\n"
+                        "Si - cualquier cosa\n";
+
+                string select;
+                cin >> select;
+                if (select == "0") {
+                    cout << "\n";
+                    break;
+                }
+            }
         }
         else if (c == 2) {
+            cout << "\n";
+            users.inOrder();
             //Modulo de jugar
             //Vamos a inicializar la lista de fichas
             PiecesList pieces;
@@ -178,6 +222,13 @@ int main(int argc, char *argv[])
             }
             pieces_in_game.getDOT();
             dictionary.getDOT();
+
+            cout << "\n";
+        }
+        else if(c == 3){
+            //Reportes
+            string select = reports();
+            cout << "\n";
         }
     }
 
