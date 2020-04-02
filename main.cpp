@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
                 //Lista para el jugador 1
                 DoubleList p1;
                 for (int i = 0; i < 7; ++i) {
-                    p1.addLast(pieces_in_game                .dequeue());
+                    p1.addLast(pieces_in_game.dequeue());
                 }
 
                 //Lista para el jugador 2
@@ -299,18 +299,29 @@ int main(int argc, char *argv[])
                 }
 
                 //Proceso de juego por turnos
+                PiecesList evaluate;
                 while (1) {
-                    cout << "Turno del jugador: " << endl;
+                    cout << "Turno del jugador: " + player1->getData().getName() << endl;
                     p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
                     pieces_in_game.getDOT();
                     SquaresXP squareAux = board.insertPiece(dimension, squaresXP);
-                    cin.get();
-                    cout << "Ingrese la letra a insertar: ";
-                    char letter = cin.get();;
-                    string auxL;
-                    auxL += letter;
-                    cout << "La letra ingresda es: " + auxL << endl;
-                    Game_Piece piece = p1.remove(auxL);
+                    Game_Piece piece = Game_Piece("a", 0, "0");
+                    while (piece.getScore() == 0) {
+                        if (p1.getSize() == 0) {
+                            cout << "Ya no cuentas con fichas disponibles" << endl;
+                            break;
+                        }
+                        cin.get();
+                        cout << "Ingrese la letra a insertar: ";
+                        char letter = cin.get();;
+                        string auxL;
+                        auxL += letter;
+                        piece = p1.remove(auxL);
+                    }
+                    if (piece.getScore() > 0) {
+                        cout << "La letra ingresda es: " + piece.getLetter() << endl;
+                        evaluate.addLast(piece);
+                    }
                     cout << endl;
                 }
 

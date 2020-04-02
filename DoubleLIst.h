@@ -96,12 +96,17 @@ public:
     //Metodo para eliminar datos de la lista
     Game_Piece remove(string letter){
         Node *aux = search(letter);
-        Game_Piece piece;
+        Game_Piece piece = Game_Piece("a", 0, "0");
         if (aux){
             piece = aux->getData();
             if (aux == this->first){
-                this->first = this->first->getNext();
-                this->first->setPrevious(0);
+                if (this->first->getNext()) {
+                    this->first = this->first->getNext();
+                    this->first->setPrevious(0);
+                }
+                else {
+                    this->first = 0;
+                }
             }
             else if (aux == this->last){
                 this->last = this->last->getPrevios();

@@ -487,7 +487,7 @@ public:
     SquaresXP insertPiece(int dimension, PiecesList squaresXP){
         int x = -1;
         while (x < 0 || x > dimension ) {
-            cout << "Ingrese la coordenada en X:";
+            cout << "Ingrese la coordenada en X: ";
             cin >> x;
             if (x < 0) {
                 alert("No se permiten numeros menonres a 0");
@@ -499,7 +499,7 @@ public:
 
         int y = -1;
         while (y < 0 || y > dimension ) {
-            cout << "Ingrese la coordenada en Y:";
+            cout << "Ingrese la coordenada en Y: ";
             cin >> y;
             if (y < 0) {
                 alert("No se permiten numeros menonres a 0");
