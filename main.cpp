@@ -109,14 +109,35 @@ string reports(){
     return select;
 }
 
-User registerUser(string username){
-    return  User(username);
+char to_lowercase(char c){
+    if (c >= 'A' && c <= 'Z') {
+        return c + 32;
+    }
+    return c;
+}
+
+User *registerUser(string username){
+    for (char &c: username) {
+        c = to_lowercase(c);
+    }
+    return  new User(username);
 }
 
 void alert(string error){
     cout << "!! Alert: " + error + " !!" << endl;
 }
 
+string win(string p1, int s1, string p2, int s2){
+    if (s1 > s2) {
+        return p1;
+    }
+    else if (s1 < s2){
+        return p2;
+    }
+    else{
+        return "Fue un empate";
+    }
+}
 
 
 int main(int argc, char *argv[])
@@ -132,9 +153,6 @@ int main(int argc, char *argv[])
     //Arbol de usuarios
     BinarySearchTree users;
 
-    //Scoreboard del juego
-    ScoreBoard scoreboard;
-
     string c;
     while (c != "5") {
         cout << "Scrabble++\n" << endl;
@@ -144,6 +162,7 @@ int main(int argc, char *argv[])
             //Proceso de lectura del archivo JSON
             cout << "Si el archivo JSON se encuentra en la carpeta del proyecto, escribe solo el nombre del archivo, si no escribe la ruta completa." << endl;
             string route = "";
+            cout << "Archivo: ";
             cin >> route;
             QJsonObject jsonObject = jsonReading(route.c_str());
 
@@ -151,7 +170,6 @@ int main(int argc, char *argv[])
             squaresXP = jsonSquares(jsonObject);
             dictionary = jsonDictionary(jsonObject);
             sleep(1);
-            system("clear");
         }
         else if (c == "1") {
             //Proceso para insertar usuarios
@@ -175,7 +193,6 @@ int main(int argc, char *argv[])
                 }
             }
             sleep(1);
-            system("clear");
         }
         else if (c == "2") {
             //Matriz: tablero del juego
@@ -251,12 +268,15 @@ int main(int argc, char *argv[])
                     cout << endl << "Escriba el username del Jugador 1: ";
                     string j;
                     cin >> j;
+                    for (char &c: j) {
+                        c = to_lowercase(c);
+                    }
                     player1 = users.search(users.getRoot(), j);
                     if (!player1) {
                         alert("El usuario no fue encontrado");
                     }
                 }
-                cout << "El usuario encontrado fue: " + player1->getData().getName() + " -> Jugador 1."<< endl;
+                cout << "El usuario encontrado fue: " + player1->getData()->getName() + " -> Jugador 1."<< endl;
 
                 //Seleccion del jugador 2
                 Node *player2 = 0;
@@ -264,6 +284,9 @@ int main(int argc, char *argv[])
                     cout << endl << "Escriba el username del Jugador 2: ";
                     string j;
                     cin >> j;
+                    for (char &c: j) {
+                        c = to_lowercase(c);
+                    }
                     player2 = users.search(users.getRoot(), j);
                     if (!player2) {
                         alert("El usuario no fue encontrado");
@@ -272,7 +295,7 @@ int main(int argc, char *argv[])
                         alert("El Jugador 2 no puede ser el mismo que le jugador 1");
                     }
                 }
-                cout << "El usuario encontrado fue: " + player2->getData().getName() + " -> Jugador 2.\n"<< endl;
+                cout << "El usuario encontrado fue: " + player2->getData()->getName() + " -> Jugador 2.\n"<< endl;
 
                 //Ya seleccionados los dos jugadores, se procede con el juego
                 board.getDOT();
@@ -293,7 +316,7 @@ int main(int argc, char *argv[])
                 }
 
                 //Impresion de las fichas de los jugadores
-                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                p1.getDOT(p1, p2, player1->getData()->getName(), player2->getData()->getName());
                 system("xdg-open FichasJugador.png");
                 sleep(1);
 
@@ -320,7 +343,7 @@ int main(int argc, char *argv[])
                         string instruction = "";
                         while (instruction != "0" && instruction != "1") {
                             cout << endl;
-                            cout << "Que desea hacer en su turno " + player1->getData().getName() + "?" << endl;
+                            cout << "Que desea hacer en su turno " + player1->getData()->getName() + "?" << endl;
                             cout << "0) Intercambiar fichas" << endl;
                             cout << "1) Insertar fichas" << endl;
                             cout << "Opcion: ";
@@ -346,7 +369,7 @@ int main(int argc, char *argv[])
                                 }
 
                                 //Preguntamos si desea finalizar el turno o intercambiar mas fichas
-                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                p1.getDOT(p1, p2, player1->getData()->getName(), player2->getData()->getName());
                                 pieces_in_game.getDOT();
                                 cout << endl;
                                 cout << "0) Desea intercambar otra ficha?" << endl;
@@ -383,7 +406,7 @@ int main(int argc, char *argv[])
                                 }
 
                                 //Preguntamos si desea validar o seguir insertando
-                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                p1.getDOT(p1, p2, player1->getData()->getName(), player2->getData()->getName());
                                 cout << endl;
                                 cout << "1) Desea insertar otra ficha?" << endl;
                                 cout << "X) Desea validar las fichas insertadas?" << endl;
@@ -445,7 +468,7 @@ int main(int argc, char *argv[])
                         string instruction = "";
                         while (instruction != "0" && instruction != "1") {
                             cout << endl;
-                            cout << "Que desea hacer en su turno " + player2->getData().getName() + "?" << endl;
+                            cout << "Que desea hacer en su turno " + player2->getData()->getName() + "?" << endl;
                             cout << "0) Intercambiar fichas" << endl;
                             cout << "1) Insertar fichas" << endl;
                             cout << "Opcion: ";
@@ -471,7 +494,7 @@ int main(int argc, char *argv[])
                                 }
 
                                 //Preguntamos si desea finalizar el turno o intercambiar mas fichas
-                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                p1.getDOT(p1, p2, player1->getData()->getName(), player2->getData()->getName());
                                 pieces_in_game.getDOT();
                                 cout << endl;
                                 cout << "0) Desea intercambar otra ficha?" << endl;
@@ -508,7 +531,7 @@ int main(int argc, char *argv[])
                                 }
 
                                 //Preguntamos si desea validar o seguir insertando
-                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                p1.getDOT(p1, p2, player1->getData()->getName(), player2->getData()->getName());
                                 cout << endl;
                                 cout << "1) Desea insertar otra ficha?" << endl;
                                 cout << "X) Desea validar las fichas insertadas?" << endl;
@@ -574,7 +597,7 @@ int main(int argc, char *argv[])
                         p2.addLast(pieces_in_game.dequeue());
                     }
                     pieces_in_game.getDOT();
-                    p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                    p1.getDOT(p1, p2, player1->getData()->getName(), player2->getData()->getName());
 
 
                     //Terminar juego o no
@@ -598,10 +621,11 @@ int main(int argc, char *argv[])
 
                 //Se acaba el juego
                 cout << "S obtuvieron los siguientes resultados" << endl;
-                cout << "J1: " + player1->getData().getName() + " obtuvo: " + to_string(pointsP1) + " pts." << endl;
-                player1->getData().addScore(pointsP1);
-                cout << "J2: " + player2->getData().getName() + " obtuvo: " + to_string(pointsP2) + " pts." << endl;
-                player2->getData().addScore(pointsP2);
+                cout << "J1: " + player1->getData()->getName() + " obtuvo: " + to_string(pointsP1) + " pts." << endl;
+                player1->getData()->addScore(pointsP1);
+                cout << "J2: " + player2->getData()->getName() + " obtuvo: " + to_string(pointsP2) + " pts." << endl;
+                player2->getData()->addScore(pointsP2);
+                cout << "El ganador es: " + win(player1->getData()->getName(), pointsP1, player2->getData()->getName(), pointsP2) << endl;
             }
             else if (dictionary.getSize() == 0) {
                 alert("El juego no cuenta con un diccionario");
@@ -613,7 +637,7 @@ int main(int argc, char *argv[])
                 alert("El juego no cuenta con los jugadores suficientes para poder iniciar una partida");
             }
             cout << "\n";
-            sleep(1);
+            sleep(10);
             system("clear");
         }
         else if(c == "3"){
@@ -625,7 +649,7 @@ int main(int argc, char *argv[])
                 if (select == "0") {
                     //Mostrar el diccionario de palabras
                     dictionary.getDOT();
-                    sleep(1);
+                    sleep(3);
                     system("xdg-open Diccionario.png");
                 }
                 else if (select == "1") {
@@ -665,7 +689,7 @@ int main(int argc, char *argv[])
                                 alert("El usuario no fue encontrado");
                             }
                         }
-                        player->getData().getScore();
+                        player->getData()->getScore();
                     }
                     else{
                         alert("El ABB de usuarios no cuenta con  registros.");
@@ -674,9 +698,12 @@ int main(int argc, char *argv[])
                 }
                 else if (select == "6") {
                     //Mostrar el scoreboard
-                    scoreboard.getDOT();
+                    users.getScoreBoard();
                     sleep(1);
                     system("xdg-open ScoreBoard.png");
+                }
+                else if (select == "7"){
+                    break;
                 }
                 else{
                     cout << "Ingrese una opcion valida" << endl;
@@ -689,7 +716,45 @@ int main(int argc, char *argv[])
         }
         else if (c == "4") {
             //Aqui van unas estructuras llenas, por si algo sale mal :'v
+            //-------------------------------------------
+            users.insert(registerUser("Yosoyfr"));
+            users.insert(registerUser("Mamba"));
+            users.insert(registerUser("Tfue"));
+            users.insert(registerUser("Cout"));
+            users.insert(registerUser("Megap"));
+            users.insert(registerUser("Ninja"));
+            //******************************************
+            Node *pla1 = users.search(users.getRoot(), "yosoyfr");
+            Node *pla2 = users.search(users.getRoot(), "cout");
+            Node *pla3 = users.search(users.getRoot(), "mamba");
+            Node *pla4 = users.search(users.getRoot(), "tfue");
+            Node *pla5 = users.search(users.getRoot(), "ninja");
+            Node *pla6 = users.search(users.getRoot(), "megap");
+
+            pla1->getData()->addScore(20);
+            pla1->getData()->addScore(80);
+            pla1->getData()->addScore(10);
+            pla1->getData()->addScore(100);
+            pla2->getData()->addScore(40);
+            pla2->getData()->addScore(30);
+            pla2->getData()->addScore(120);
+            pla3->getData()->addScore(56);
+            pla3->getData()->addScore(35);
+            pla3->getData()->addScore(12);
+            pla4->getData()->addScore(58);
+            pla4->getData()->addScore(5);
+            pla4->getData()->addScore(129);
+            pla5->getData()->addScore(36);
+            pla5->getData()->addScore(78);
+            pla5->getData()->addScore(98);
+            pla6->getData()->addScore(45);
+            pla6->getData()->addScore(9);
+            pla6->getData()->addScore(105);
+
+            system("clear");
+            cout << "\n";
         }
+        system("clear");
     }
 
     return 0;

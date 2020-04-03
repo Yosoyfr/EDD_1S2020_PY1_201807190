@@ -10,11 +10,10 @@ using namespace  std;
 class User{
 private:
     string name;
-    SimpleList score;
+    SimpleList score = SimpleList();;
 public:
     //Constructor del objeto user
     User(string name){
-        this->score = SimpleList();
         this->name = name;
     }
     //Constructor vacio del user
@@ -30,9 +29,18 @@ public:
 
     void setName(string newName){this->name = newName;}
 
-    void addScore(int score){this->score.addOrder(score);}
+    void addScore(int score){
+        this->score.addOrder(score);
+    }
 
-    int getBestScore(){return score.getFirst()->getData();}
+    int getBestScore(){
+        if (score.getFirst()) {
+            return score.getFirst()->getData();
+        }
+        else{
+            return 0;
+        }
+    }
 
     ~User(){}
 };

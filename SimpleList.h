@@ -35,11 +35,13 @@ class SimpleList{
             return graph;
         }
 
-        string getDOT(){
+        string getDOT(int size){
             string graph;
             int aux = getData();
             if(this->next)
                 graph += "\"" + to_string(aux) + " pts.\"->\"" + getDOTN() +"\";\n";
+            else if (size == 1)
+                graph += "\"" + to_string(aux) + " pts.\"";
             else
                 graph += "";
             return graph;
@@ -113,11 +115,11 @@ public:
             Node *aux, *prev;
             aux = prev = this->first;
 
-            while (aux->getNext() && data > aux->getData()) {
+            while (aux->getNext() && data < aux->getData()) {
                 prev = aux;
                 aux = aux->getNext();
             }
-            if (data > aux->getData()){
+            if (data < aux->getData()){
                 prev = aux;
             }
             n->setNext(prev->getNext());
@@ -210,7 +212,7 @@ public:
         Node *aux = this->first;
 
         while (aux) {
-            graph += aux->getDOT();
+            graph += aux->getDOT(this->size);
             aux = aux->getNext();
         }
         graph += "graph[label=\"Puntajes de " + player + "\"];\n"
@@ -226,7 +228,7 @@ public:
         string dot = "dot -Tpng " + puntaje + ".dot -o " + puntaje + ".png";
         system(dot.c_str());
         sleep(2);
-        string s = "xdg-open" + puntaje+ ".png";
+        string s = "xdg-open " + puntaje+ ".png";
         system(s.c_str());
     }
 
@@ -245,8 +247,6 @@ public:
 
     //Retorna la cabeza
     Node *getFirst(){return first;}
-
-    ~SimpleList(){};
 
 };
 

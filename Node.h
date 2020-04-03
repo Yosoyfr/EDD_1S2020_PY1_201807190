@@ -2,6 +2,7 @@
 #define NODE_H
 
 #include<Objects.h>
+#include<ScoreBoard.h>
 
 
 class Node{
@@ -9,17 +10,17 @@ private:
     //Atributos de un nodo para un arbol binario
     Node *left;
     Node *right;
-    User data;
+    User *data;
 
 public:
     //Constructores del objeto Node de un arbol binario
-    Node(User data){
+    Node(User *data){
         this->left = 0;
         this->right = 0;
         this->data = data;
     }
 
-    Node(Node *left, User data, Node *right){
+    Node(Node *left, User *data, Node *right){
         this->left = left;
         this->right = right;
         this->data = data;
@@ -33,26 +34,44 @@ public:
     void setLeft(Node *n) {this->left = n;}
     Node *getRight(){return right;}
     void setRight(Node *n) {this->right = n;}
-    User getData(){return data;}
-    void setData(User n) {this->data = n;}
+    User *getData(){return data;}
+    void setData(User *n) {this->data = n;}
 
     //Obtiene el codigo DOT para formar el grafico
     string getDOT(){
         string graph;
 
         if(left == 0 && right == 0){
-            graph = "\"" + getData().getName() + "\" [label = \"" + getData().getName() + "\"];\n";
+            graph = "\"" + getData()->getName() + "\" [label = \"" + getData()->getName() + "\"];\n";
         }
         else {
-            graph = "\"" + getData().getName() + "\" [label = \"<C0>|" + getData().getName() + "|<C1>\"];\n";
+            graph = "\"" + getData()->getName() + "\" [label = \"<C0>|" + getData()->getName() + "|<C1>\"];\n";
         }
 
         if(left != 0)
-            graph += left->getDOT() + "\"" + getData().getName() + "\":C0->\"" + left->getData().getName() + "\";\n";
+            graph += left->getDOT() + "\"" + getData()->getName() + "\":C0->\"" + left->getData()->getName() + "\";\n";
         if(right != 0)
-            graph += right->getDOT() + "\"" + getData().getName() + "\":C1->\"" + right->getData().getName() + "\";\n";
+            graph += right->getDOT() + "\"" + getData()->getName() + "\":C1->\"" + right->getData()->getName() + "\";\n";
 
         return graph;
+    }
+
+    //Scoreboard del juego update
+    void getScoreBoard(Node *r){
+        //Scoreboard del juego
+        scoreboard = ScoreBoard();
+        getScore(r);
+        scoreboard.getDOT();
+    }
+
+    ScoreBoard scoreboard;
+    //Retorna del juego
+    void getScore(Node *r){
+        if (r) {
+            scoreboard.addOrderSB(*r->getData());
+            getScore(r->getLeft());
+            getScore(r->getRight());
+        }
     }
 
     //Recorrido del arbol en preorden
@@ -83,7 +102,7 @@ public:
     }
 
     void visit(){
-        cout << "<" + getData().getName() + "> ";
+        cout << "<" + getData()->getName() + "> ";
     }
 
     //Los mismo metodos de arriba, solo que para obtener el dot
@@ -124,7 +143,7 @@ public:
     }
 
     string visitDOT(){
-        return getData().getName();
+        return getData()->getName();
     }
 
     //~Node();

@@ -32,7 +32,7 @@ public:
         return root == 0;
     }
 
-    static Node *newTree(Node *left, User data, Node *right){
+    static Node *newTree(Node *left, User *data, Node *right){
         return  new Node(left, data, right);
     }
 
@@ -62,34 +62,34 @@ public:
     Node *search(Node *rootAux, string dataSearch){
         if (rootAux == NULL)
             return 0;
-        else if (dataSearch.compare(rootAux->getData().getName()) == 0)
+        else if (dataSearch.compare(rootAux->getData()->getName()) == 0)
                  return rootAux;
-        else if (dataSearch.compare(rootAux->getData().getName()) == -1)
+        else if (dataSearch.compare(rootAux->getData()->getName()) == -1)
                  return search(rootAux->getLeft(), dataSearch);
         else
                  return search(rootAux->getRight(), dataSearch);
     }
 
     //Metodo para insertar datos al arbol
-    void insert (User data){
+    void insert (User *data){
         this->root = insert(this->root, data);
     }
 
-    Node *insert(Node *rootAux, User data){
+    Node *insert(Node *rootAux, User *data){
         if (rootAux == NULL){
             rootAux = new Node(data);
             cout << "Registro exitoso" << endl;
             this->size++;
         }
-        else if (data.getName().compare(rootAux->getData().getName()) < 0){
+        else if (data->getName().compare(rootAux->getData()->getName()) < 0){
             Node *leftAux = insert(rootAux->getLeft(), data);
             rootAux->setLeft(leftAux);
         }
-        else if (data.getName().compare(rootAux->getData().getName()) > 0){
+        else if (data->getName().compare(rootAux->getData()->getName()) > 0){
             Node *rightAux = insert(rootAux->getRight(), data);
             rootAux->setRight(rightAux);
         }
-        else if (data.getName().compare(rootAux->getData().getName()) == 0)
+        else if (data->getName().compare(rootAux->getData()->getName()) == 0)
             cout << "Ya existe este username" << endl;
         return rootAux;
     }
@@ -169,6 +169,8 @@ public:
 
         system("dot -Tpng Postorden.dot -o Postorden.png");
     }
+
+    void getScoreBoard(){this->root->getScoreBoard(this->root);}
 
     //Accesores y modificadores de los atributos del nodo
     Node *getRoot(){return root;}

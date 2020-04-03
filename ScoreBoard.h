@@ -72,6 +72,7 @@ public:
 
     void addOrderSB(User user){
         Node *n = new Node(user);
+
         if(isEmpty()){
             this->first = n;
         }
@@ -82,12 +83,11 @@ public:
         else{
             Node *aux, *prev;
             aux = prev = this->first;
-
-            while (aux->getNext() && user.getBestScore() > aux->getUser().getBestScore()) {
+            while (aux->getNext() && user.getBestScore() < aux->getUser().getBestScore()) {
                 prev = aux;
                 aux = aux->getNext();
             }
-            if (user.getBestScore() > aux->getUser().getBestScore()){
+            if (user.getBestScore() < aux->getUser().getBestScore()){
                 prev = aux;
             }
             n->setNext(prev->getNext());
