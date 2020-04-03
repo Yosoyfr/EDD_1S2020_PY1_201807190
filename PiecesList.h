@@ -6,44 +6,44 @@
 #include <Objects.h>
 using namespace  std;
 
+class NodePiece{
+private:
+    //Atributos del nodo
+    NodePiece *next;
+    Game_Piece piece;
+    SquaresXP square;
+
+public:
+    //Constructores del nodo para la pieza
+    NodePiece(Game_Piece piece){
+        this->next = 0;
+        this->piece = piece;
+    }
+
+    //Constructores del nodo para la pieza
+    NodePiece(SquaresXP square){
+        this->next = 0;
+        this->square = square;
+    }
+
+    //Constructor vacio del nodo
+    NodePiece(){}
+
+    //Accesores y modificadores de los atributos del nodo
+    NodePiece *getNext(){return next;}
+    void setNext(NodePiece *n) {this->next = n;}
+    Game_Piece getPiece(){return piece;}
+    void setPiece(Game_Piece n) {this->piece = n;}
+    SquaresXP getSquare(){return square;}
+
+    ~NodePiece(){}
+};
+
 class PiecesList{
 
-    class Node{
-    private:
-        //Atributos del nodo
-        Node *next;
-        Game_Piece piece;
-        SquaresXP square;
-
-    public:
-        //Constructores del nodo para la pieza
-        Node(Game_Piece piece){
-            this->next = 0;
-            this->piece = piece;
-        }
-
-        //Constructores del nodo para la pieza
-        Node(SquaresXP square){
-            this->next = 0;
-            this->square = square;
-        }
-
-        //Constructor vacio del nodo
-        Node(){}
-
-        //Accesores y modificadores de los atributos del nodo
-        Node *getNext(){return next;}
-        void setNext(Node *n) {this->next = n;}
-        Game_Piece getPiece(){return piece;}
-        void setPiece(Game_Piece n) {this->piece = n;}
-        SquaresXP getSquare(){return square;}
-
-        ~Node(){}
-    };
-
 private:
-    Node *first;
-    Node *last;
+    NodePiece *first;
+    NodePiece *last;
     int size;
 
 public:
@@ -60,7 +60,7 @@ public:
 
     //Inserta datos a la lista, por el final
     void addLast(Game_Piece piece){
-        Node *n = new Node(piece);
+        NodePiece *n = new NodePiece(piece);
          if(isEmpty()){
              this->first = n;
              this->last = n;
@@ -76,7 +76,7 @@ public:
     Game_Piece removeFirst(){
         Game_Piece piece;
         if(!isEmpty()){
-            Node *aux = this->first;
+            NodePiece *aux = this->first;
             piece = aux->getPiece();
             this->first = this->first->getNext();
             delete aux;
@@ -91,7 +91,7 @@ public:
         if(!this->first->getNext())
             removeFirst();
         else if(!isEmpty()){
-            Node *aux, *prev;
+            NodePiece *aux, *prev;
             aux = this->first;
             piece = this->last->getPiece();
             while (aux->getNext()) {
@@ -117,7 +117,7 @@ public:
         else if (pos == this->size - 1)
             piece = removeLast();
         else if(!isEmpty()){
-            Node *aux, *prev;
+            NodePiece *aux, *prev;
             aux = this->first;
             for(int i = 0; i < pos; i++){
                 prev = aux;
@@ -133,7 +133,7 @@ public:
 
     //Inserta datos a la lista, por el final
     void addLast(SquaresXP square){
-        Node *n = new Node(square);
+        NodePiece *n = new NodePiece(square);
          if(isEmpty()){
              this->first = n;
              this->last = n;
@@ -147,7 +147,7 @@ public:
 
     // Metodo para imprimir los nodos de la lista
     void print(){
-        Node *aux = this->first;
+        NodePiece *aux = this->first;
 
         while (aux) {
             cout << aux->getPiece().getLetter() << endl;
@@ -157,7 +157,7 @@ public:
 
     // Metodo que retorna el valor del multiplicador
     int multiplierXP(int x, int y){
-        Node *aux = this->first;
+        NodePiece *aux = this->first;
         int xp = 1;
         while (aux) {
             if (aux->getSquare().getX() == x && aux->getSquare().getY() == y) {
@@ -172,7 +172,7 @@ public:
     //Proceso de evaluar las casillas del jugador
     bool evaluateX(){
         bool perm = true;
-        Node *aux = this->first;
+        NodePiece *aux = this->first;
         int x = aux->getSquare().getX();
         while (aux) {
             if (aux->getSquare().getX() != x) {
@@ -187,7 +187,7 @@ public:
 
     bool evaluateY(){
         bool perm = true;
-        Node *aux = this->first;
+        NodePiece *aux = this->first;
         int y = aux->getSquare().getY();
         while (aux) {
             if (aux->getSquare().getY() != y) {
@@ -204,7 +204,7 @@ public:
     int getSize(){return size;}
 
     //Retorna la cabeza
-    Node *getFirst(){return first;}
+    NodePiece *getFirst(){return first;}
     int getX1(){return first->getSquare().getX();}
     int getX2(){return last->getSquare().getX();}
     int getY1(){return first->getSquare().getY();}

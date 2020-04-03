@@ -166,6 +166,7 @@ public:
         file.close();
 
         system("dot -Tpng Diccionario.dot -o Diccionario.png");
+
     }
 
     int getSize(){return size;}

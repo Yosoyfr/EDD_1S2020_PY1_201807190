@@ -27,6 +27,7 @@ public:
 
     //Accesores y modificadores del objeto
     string getName(){return name;}
+
     void setName(string newName){this->name = newName;}
 
     void addScore(int score){this->score.addOrder(score);}

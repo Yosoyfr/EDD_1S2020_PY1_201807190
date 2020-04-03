@@ -5,6 +5,8 @@
 #include <qdebug.h>
 #include <fstream>
 
+#include <unistd.h>
+
 using namespace  std;
 
 class SimpleList{
@@ -223,6 +225,9 @@ public:
         file.close();
         string dot = "dot -Tpng " + puntaje + ".dot -o " + puntaje + ".png";
         system(dot.c_str());
+        sleep(2);
+        string s = "xdg-open" + puntaje+ ".png";
+        system(s.c_str());
     }
 
     // Metodo para imprimir los nodos de la lista

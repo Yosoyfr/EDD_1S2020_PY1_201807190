@@ -4,6 +4,7 @@
 #include<QDebug>
 #include<Objects.h>
 #include<PiecesList.h>
+#include<DoubleLIst.h>
 #include<iostream>
 #include<iomanip>
 
@@ -164,6 +165,11 @@ private:
 
 public:
 
+    Matrix(){
+        this->root = new Node(-1, -1, Game_Piece("Root", 0, "0"), 0);
+        this->size = 0;
+    }
+
     Node *search_Row(int y){
         Node *aux = this->root;
         while (aux) {
@@ -302,7 +308,7 @@ public:
         //Removemos de la columna
         piece = removeOrderColumn(row, x);
         //Removemos de la fila
-        piece = removeOrderRow(column, y);
+        removeOrderRow(column, y);
 
 
         //Si las cabeceras ya no tienen datos se eliminan
@@ -320,7 +326,7 @@ public:
 
         if (!row->getNext()) {
             Node *up = row->getUp();
-            if (!column->getDown()) {
+            if (!row->getDown()) {
                 up->setDown(0);
             }
             else{
@@ -329,13 +335,13 @@ public:
             }
             delete row;
         }
+        this->size--;
         return piece;
     }
 
     Game_Piece removeOrderColumn(Node *row, int x){
         Node *aux = row;
         Game_Piece piece;
-        cout << to_string(x) << endl;
         while (aux != NULL) {
             if (aux->getX() == x) {
                 Node *prev = aux->getPrevious();
@@ -518,7 +524,7 @@ public:
         return piece;
     }
 
-    //Proceso de suma de puntos
+    //Proceso de obtencion de la palabra
     string evaluateWordCol(int x, int y1, int y2){
         //Obtenemos las cabeceras
         Node *column = this->search_Column(x);
@@ -544,6 +550,34 @@ public:
         }
         return word;
     }
+
+    //Proceso de suma de puntos
+    int getPointsCol(int x, int y1, int y2){
+        //Obtenemos la cabecera de la columna
+        Node *column = this->search_Column(x);
+        int points = 0;
+        while (column) {
+            if (column->getY() >= y1 && column->getY() <= y2) {
+                points += column->getData().getScore()*column->getMultiplierXP();
+            }
+            column = column->getDown();
+        }
+        return points;
+    }
+
+    int getPointsRow(int y, int x1, int x2){
+        //Obtenemos la cabecera de la fila
+        Node *row = this->search_Row(y);
+        int points = 0;
+        while (row) {
+            if (row->getX() >= x1 && row->getX() <= x2) {
+                points += row->getData().getScore()*row->getMultiplierXP();
+            }
+            row = row->getNext();
+        }
+        return points;
+    }
+
 
     ~Matrix(){};
     int getSize(){return this->size;}

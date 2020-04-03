@@ -22,6 +22,8 @@
 #include <QJsonValue>
 #include <QJsonArray>
 
+#include <unistd.h>
+
 #include <iostream>
 using namespace std;
 
@@ -101,6 +103,7 @@ string reports(){
     for (int i = 0; i < 7; ++i) {
         cout << to_string(i) + " - " + instructions[i] + " del juego." << endl;
     }
+    cout << "7 - Salir del modulo de reportes." << endl;
     cout << "Opcion: ";
     cin >> select;
     return select;
@@ -145,6 +148,13 @@ int main(int argc, char *argv[])
     users.insert(registerUser("Ninja"));
     users.insert(registerUser("a"));
     users.insert(registerUser("b"));
+
+    squaresXP.addLast(SquaresXP(1, 1, 2));
+    squaresXP.addLast(SquaresXP(3, 2, 2));
+    squaresXP.addLast(SquaresXP(0, 2, 2));
+    squaresXP.addLast(SquaresXP(4, 0, 3));
+    squaresXP.addLast(SquaresXP(1, 5, 3));
+
     dimension = 20;
 
     string c;
@@ -285,6 +295,9 @@ int main(int argc, char *argv[])
 
                 //Ya seleccionados los dos jugadores, se procede con el juego
                 board.getDOT();
+                system("xdg-open Matrix.png");
+                sleep(1);
+
                 //Se le daran fichas a los jugadores
                 //Lista para el jugador 1
                 DoubleList p1;
@@ -297,101 +310,273 @@ int main(int argc, char *argv[])
                 for (int i = 0; i < 7; ++i) {
                     p2.addLast(pieces_in_game.dequeue());
                 }
+
+                //Impresion de las fichas de los jugadores
                 p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                system("xdg-open FichasJugador.png");
+                sleep(1);
+
+                //Impresion de las fichas que tiene el juego
                 pieces_in_game.getDOT();
+                system("xdg-open FichasJuego.png");
 
-                //Proceso de juego por turnos
-                PiecesList piecesEvaluate;
-                PiecesList squaresEvaluate;
-                string instruction = "0";
-
-                while (1) {
-                    //Primer turno
-
-                    //Opcion: Intercambio de fichas
-                    while (instruction == "0") {
-                        cout << "Intercambio de fichas: " + player1->getData().getName() << endl;
-                        Game_Piece piece = Game_Piece("a", 0, "0");
-                        while (piece.getScore() == 0) {
-                            cin.get();
-                            cout << "Ingrese la letra a intercambiar: ";
-                            char letter = cin.get();;
-                            string auxL;
-                            auxL += letter;
-                            piece = p1.remove(auxL);
+                //Seleccion del turno-----------------------------------------------------------------------------------------------------------------------
+                int turn = 0;
+                int pointsP1 = 0;
+                int pointsP2 = 0;
+                //Empezamos la partida
+                while (pieces_in_game.getSize() > 0 && turn != 2) {
+                    //Proceso de juego por turnos
+                    PiecesList piecesEvaluate;
+                    PiecesList squaresEvaluate;
+                    if (turn == 0) {
+                        //Primer turno
+                        string instruction = "";
+                        while (instruction != "0" && instruction != "1") {
+                            cout << endl;
+                            cout << "Que desea hacer en su turno " + player1->getData().getName() + "?" << endl;
+                            cout << "0) Intercambiar fichas" << endl;
+                            cout << "1) Insertar fichas" << endl;
+                            cout << "Opcion: ";
+                            cin >> instruction;
+                            cout << endl;
                         }
-                        if (piece.getScore() > 0) {
-                            pieces_in_game.enqueue(piece);
-                            p1.addLast(pieces_in_game.dequeue());
-                        }
+                        if (instruction == "0") {
+                            instruction = "0";
+                            //Opcion: Intercambio de fichas
+                            while (instruction == "0") {
+                                Game_Piece piece = Game_Piece("a", 0, "0");
+                                while (piece.getScore() == 0) {
+                                    cin.get();
+                                    cout << "Ingrese la letra a intercambiar: ";
+                                    char letter = cin.get();;
+                                    string auxL;
+                                    auxL += letter;
+                                    piece = p1.remove(auxL);
+                                }
+                                if (piece.getScore() > 0) {
+                                    pieces_in_game.enqueue(piece);
+                                    p1.addLast(pieces_in_game.dequeue());
+                                }
 
-                        p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
-                        pieces_in_game.getDOT();
-                        cout << endl;
-                        cout << "1) Desea intercambar otra ficha? - 0" << endl;
-                        cout << "2) Finalizar turno? - Cualquier cosa" << endl;
-                        cout << "Opcion: ";
-                        cin >> instruction;
-                        cout << endl;
-                    }
-
-                    //Opcion: jugar el turno
-                    while (instruction == "1") {
-                        cout << "Turno del jugador: " + player1->getData().getName() << endl;
-                        SquaresXP squareAux = board.insertPiece(dimension, squaresXP);
-                        Game_Piece piece = Game_Piece("a", 0, "0");
-                        while (piece.getScore() == 0) {
-                            if (p1.getSize() == 0) {
-                                cout << "Ya no cuentas con fichas disponibles" << endl;
-                                break;
+                                //Preguntamos si desea finalizar el turno o intercambiar mas fichas
+                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                pieces_in_game.getDOT();
+                                cout << endl;
+                       del juego         cout << "0) Desea intercambar otra ficha?" << endl;
+                                cout << "X) Finalizar turno?" << endl;
+                                cout << "Opcion: ";
+                                cin >> instruction;
+                                cout << endl;
                             }
-                            cin.get();
-                            cout << "Ingrese la letra a insertar: ";
-                            char letter = cin.get();;
-                            string auxL;
-                            auxL += letter;
-                            piece = p1.remove(auxL);
                         }
-                        if (piece.getScore() > 0) {
-                            cout << "La letra ingresda es: " + piece.getLetter() << endl;
-                            piecesEvaluate.addLast(piece);
-                            squaresEvaluate.addLast(squareAux);
-                            board.insert(squareAux.getX(), squareAux.getY(), piece, squareAux.getMultiplier());
-                            board.getDOT();
+                        else{
+                            //Opcion: jugar el turno
+                            instruction = "1";
+                            while (instruction == "1") {
+                                SquaresXP squareAux = board.insertPiece(dimension, squaresXP);
+                                Game_Piece piece = Game_Piece("a", 0, "0");
+                                while (piece.getScore() == 0) {
+                                    if (p1.getSize() == 0) {
+                                        cout << "Ya no cuentas con fichas disponibles" << endl;
+                                        break;
+                                    }
+                                    cin.get();
+                                    cout << "Ingrese la letra a insertar: ";
+                                    char letter = cin.get();;
+                                    string auxL;
+                                    auxL += letter;
+                                    piece = p1.remove(auxL);
+                                }
+                                if (piece.getScore() > 0) {
+                                    cout << "La letra ingresda es: " + piece.getLetter() << endl;
+                                    piecesEvaluate.addLast(piece);
+                                    squaresEvaluate.addLast(squareAux);
+                                    board.insert(squareAux.getX(), squareAux.getY(), piece, squareAux.getMultiplier());
+                                    board.getDOT();
+                                }
+
+                     del juego           //Preguntamos si desea validar o seguir insertando
+                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                cout << endl;
+                                cout << "1) Desea insertar otra ficha?" << endl;
+                                cout << "X) Desea validar las fichas insertadas?" << endl;
+                                cout << "Opcion: ";
+                                cin >> instruction;
+                                cout << endl;
+                            }
+                            //Evaluacion de las letras insertadas
+                            string word = "";
+                            bool evaluateX = squaresEvaluate.evaluateX();
+                            bool evaluateY = squaresEvaluate.evaluateY();
+                            if (evaluateX) {
+                                //Evaluacion por medio de busqueda en una columna
+                                word = board.evaluateWordCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());;
+                                cout << "La palabra registrada fue: " + word << endl;
+                            }
+                            else if (evaluateY) {
+                                //Evaluacion por medio de busqueda en una fila
+                                word = board.evaluateWordRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+                                cout << "La palabra registrada fue: " + word << endl;
+                            }
+                            else{
+                                alert("No se puede evaluar su registro ya que existe un error al insertar");
+                                //Proceso de retornar las fichas insertadas
+                                NodePiece *auxP = squaresEvaluate.getFirst();
+                                while (auxP) {
+                                    p1.addLast(board.remove(auxP->getSquare().getX(), auxP->getSquare().getY()));
+                                    auxP = auxP->getNext();
+                                }
+                                board.getDOT();
+                            }
+                            //Ahora comparar la palabra registrada con el diccionario
+                            int points = 0;
+                            if (word != "") {
+                                bool existWord = dictionary.searchWord(word);
+                                if (existWord && evaluateX) {
+                                    points = board.getPointsCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());
+                                }
+                                else if (existWord && evaluateY) {
+                                    points = board.getPointsRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+
+                                }
+                                else {
+                                    cout << "La palabra registrada no coincide con alguna del diccionario." << endl;
+                                    NodePiece *auxP = squaresEvaluate.getFirst();
+                                    while (auxP) {
+                                        p1.addLast(board.remove(auxP->getSquare().getX(), auxP->getSquare().getY()));
+                                        auxP = auxP->getNext();
+                                    }
+                                    board.getDOT();
+                                }
+                            }
+                            pointsP1 += points;
+                            cout << "Obtuviste los siguientes puntos en el turno: " + to_string(points) + "."<< endl;
                         }
-                        p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
-                        cout << endl;
-                        cout << "1) Desea insertar otra ficha? - 1" << endl;
-                        cout << "2) Desea validar las fichas insertadas? - Cualquier cosa" << endl;
-                        cout << "Opcion: ";
-                        cin >> instruction;
-                        cout << endl;
                     }
-
-                    //Evaluacion de las letras insertadas
-                    string word = "";
-                    if (squaresEvaluate.evaluateX()) {
-                        //Evaluacion por medio de busqueda en una columna
-                        word = board.evaluateWordCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());;
-                        cout << "La palabra registrada fue: " + word << endl;
-                    }
-                    else if (squaresEvaluate.evaluateY()) {
-                        //Evaluacion por medio de busqueda en una fila
-                        word = board.evaluateWordRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
-                        cout << "La palabra registrada fue: " + word << endl;
-
-                    }
-                    else{
-                        alert("No se puede evaluar su registro ya que existe un error al insertar.");
-                    }
-
-                    //Ahora comparar la palabra registrada con el diccionario
-                    if (word != "") {
-                        if (dictionary.searchWord(word)) {
-                            cout << "Sumar puntos." << endl;
+                    else {
+                        //Segundo turno
+                        string instruction = "";
+                        while (instruction != "0" && instruction != "1") {
+                            cout << endl;
+                            cout << "Que desea hacer en su turno " + player2->getData().getName() + "?" << endl;
+                            cout << "0) Intercambiar fichas" << endl;
+                            cout << "1) Insertar fichas" << endl;
+                            cout << "Opcion: ";
+                            cin >> instruction;
+                            cout << endl;
                         }
-                        else {
-                            cout << "La palabra registrada no coincide con alguna del diccionario." << endl;
+                        if (instruction == "0") {
+                            instruction = "0";
+                            //Opcion: Intercambio de fichas
+                            while (instruction == "0") {
+                                Game_Piece piece = Game_Piece("a", 0, "0");
+                                while (piece.getScore() == 0) {
+                                    cin.get();
+                                    cout << "Ingrese la letra a intercambiar: ";
+                                    char letter = cin.get();;
+                                    string auxL;
+                                    auxL += letter;
+                                    piece = p2.remove(auxL);
+                                }
+                                if (piece.getScore() > 0) {
+                                    pieces_in_game.enqueue(piece);
+                                    p2.addLast(pieces_in_game.dequeue());
+                                }
+
+                                //Preguntamos si desea finalizar el turno o intercambiar mas fichas
+                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                pieces_in_game.getDOT();
+                                cout << endl;
+                                cout << "0) Desea intercambar otra ficha?" << endl;
+                                cout << "X) Finalizar turno?" << endl;
+                                cout << "Opcion: ";
+                                cin >> instruction;
+                                cout << endl;
+                            }
+                        }
+                        else{
+                            //Opcion: jugar el turno
+                            instruction = "1";
+                            while (instruction == "1") {
+                                SquaresXP squareAux = board.insertPiece(dimension, squaresXP);
+                                Game_Piece piece = Game_Piece("a", 0, "0");
+                                while (piece.getScore() == 0) {
+                                    if (p2.getSize() == 0) {
+                                        cout << "Ya no cuentas con fichas disponibles" << endl;
+                                        break;
+                                    }
+                                    cin.get();
+                                    cout << "Ingrese la letra a insertar: ";
+                                    char letter = cin.get();;
+                                    string auxL;
+                                    auxL += letter;
+                                    piece = p2.remove(auxL);
+                                }
+                                if (piece.getScore() > 0) {
+                                    cout << "La letra ingresda es: " + piece.getLetter() << endl;
+                                    piecesEvaluate.addLast(piece);
+                                    squaresEvaluate.addLast(squareAux);
+                                    board.insert(squareAux.getX(), squareAux.getY(), piece, squareAux.getMultiplier());
+                                    board.getDOT();
+                                }
+
+                                //Preguntamos si desea validar o seguir insertando
+                                p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+                                cout << endl;
+                                cout << "1) Desea insertar otra ficha?" << endl;
+                                cout << "X) Desea validar las fichas insertadas?" << endl;
+                                cout << "Opcion: ";
+                                cin >> instruction;
+                                cout << endl;
+                            }
+                            //Evaluacion de las letras insertadas
+                            string word = "";
+                            bool evaluateX = squaresEvaluate.evaluateX();
+                            bool evaluateY = squaresEvaluate.evaluateY();
+                            if (evaluateX) {
+                                //Evaluacion por medio de busqueda en una columna
+                                word = board.evaluateWordCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());;
+                                cout << "La palabra registrada fue: " + word << endl;
+                            }
+                            else if (evaluateY) {
+                                //Evaluacion por medio de busqueda en una fila
+                                word = board.evaluateWordRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+                                cout << "La palabra registrada fue: " + word << endl;
+                            }
+                            else{
+                                alert("No se puede evaluar su registro ya que existe un error al insertar");
+                                //Proceso de retornar las fichas insertadas
+                                NodePiece *auxP = squaresEvaluate.getFirst();
+                                while (auxP) {
+                                    p2.addLast(board.remove(auxP->getSquare().getX(), auxP->getSquare().getY()));
+                                    auxP = auxP->getNext();
+                                }
+                                board.getDOT();
+                            }
+                            //Ahora comparar la palabra registrada con el diccionario
+                            int points = 0;
+                            if (word != "") {
+                                bool existWord = dictionary.searchWord(word);
+                                if (existWord && evaluateX) {
+                                    points = board.getPointsCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());
+                                }
+                                else if (existWord && evaluateY) {
+                                    points = board.getPointsRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+
+                                }
+                                else {
+                                    cout << "La palabra registrada no coincide con alguna del diccionario." << endl;
+                                    NodePiece *auxP = squaresEvaluate.getFirst();
+                                    while (auxP) {
+                                        p2.addLast(board.remove(auxP->getSquare().getX(), auxP->getSquare().getY()));
+                                        auxP = auxP->getNext();
+                                    }
+                                    board.getDOT();
+                                }
+                            }
+                            pointsP2 += points;
+                            cout << "Obtuviste los siguientes puntos en el turno: " + to_string(points) + "."<< endl;
                         }
                     }
 
@@ -399,9 +584,38 @@ int main(int argc, char *argv[])
                     for (int i = p1.getSize(); i < 7; ++i) {
                         p1.addLast(pieces_in_game.dequeue());
                     }
+                    for (int i = p2.getSize(); i < 7; ++i) {
+                        p2.addLast(pieces_in_game.dequeue());
+                    }
                     pieces_in_game.getDOT();
                     p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
+
+
+                    //Terminar juego o no
+                    string temp = "";
+                    while (temp != "0" && temp != "1") {
+                        cout << endl;
+                        cout << "1) Desea Terminar el juego? Si - 1 / No - 0" << endl;
+                        cout << "Opcion: ";
+                        cin >> temp;
+                    }
+                    if (temp == "1") {
+                        turn = 2;
+                    }
+                    else if (turn == 0) {
+                        turn = 1;
+                    }
+                    else{
+                        turn = 0;
+                    }
                 }
+
+                //Se acaba el juego
+                cout << "S obtuvieron los siguientes resultados" << endl;
+                cout << "J1: " + player1->getData().getName() + " obtuvo: " + to_string(pointsP1) + " pts." << endl;
+                player1->getData().addScore(pointsP1);
+                cout << "J2: " + player2->getData().getName() + " obtuvo: " + to_string(pointsP2) + " pts." << endl;
+                player2->getData().addScore(pointsP2);
             }
             else if (dictionary.getSize() == 0) {
                 alert("El juego no cuenta con un diccionario");
@@ -417,41 +631,66 @@ int main(int argc, char *argv[])
         }
         else if(c == "3"){
             //Reportes
-            string select = reports();
+            string select = "";
 
-            if (select == "0") {
-                //Mostrar el diccionario de palabras
-                dictionary.getDOT();
-            }
-            else if (select == "1") {
-                //Mostrar ABB de usuarios
-                users.getDOT();
-            }
-            else if (select == "2") {
-                //Mostrar recorrido  Preorden
-                users.preOrderDOT();
-            }
-            else if (select == "3") {
-                //Mostrar el recorrido Inorden
-                users.inOrderDOT();
-            }
-            else if (select == "4") {
-                //Mostrar el recorrido Postorden
-                users.postOrderDOT();
-            }
-            else if (select == "5") {
-                //Mostrar historial de puntajes por un usuario
-
-            }
-            else if (select == "6") {
-                //Mostrar el scoreboard
-                scoreboard.getDOT();
-            }
-            else{
-                cout << "Ingrese una opcion valida" << endl;
+            while (select != "7") {
                 select = reports();
+                if (select == "0") {
+                    //Mostrar el diccionario de palabras
+                    dictionary.getDOT();
+                    sleep(1);
+                    system("xdg-open Diccionario.png");
+                }
+                else if (select == "1") {
+                    //Mostrar ABB de usuarios
+                    users.getDOT();
+                    sleep(1);
+                    system("xdg-open BinaryTree.png");
+                }
+                else if (select == "2") {
+                    //Mostrar recorrido  Preorden
+                    users.preOrderDOT();
+                    sleep(1);
+                    system("xdg-open Preorden.png");
+                }
+                else if (select == "3") {
+                    //Mostrar el recorrido Inorden
+                    users.inOrderDOT();
+                    sleep(1);
+                    system("xdg-open Inorden.png");
+                }
+                else if (select == "4") {
+                    //Mostrar el recorrido Postorden
+                    users.postOrderDOT();
+                    sleep(1);
+                    system("xdg-open Postorden.png");
+                }
+                else if (select == "5") {
+                    //Mostrar historial de puntajes por un usuario
+                    Node *player = 0;
+                    while (!player) {
+                        cout << "Inserte el username del jugador: ";
+                        string j;
+                        cin >> j;
+                        player = users.search(users.getRoot(), j);
+                        if (!player) {
+                            alert("El usuario no fue encontrado");
+                        }
+                    }
+                    player->getData().getScore();
+                }
+                else if (select == "6") {
+                    //Mostrar el scoreboard
+                    scoreboard.getDOT();
+                    sleep(1);
+                    system("xdg-open ScoreBoard.png");
+                }
+                else{
+                    cout << "Ingrese una opcion valida" << endl;
+                    select = reports();
+                }
+                cout << "\n";
             }
-            cout << "\n";
         }
     }
 

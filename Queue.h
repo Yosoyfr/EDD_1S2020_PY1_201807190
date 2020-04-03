@@ -41,11 +41,13 @@ class Queue{
 private:
     Node *first;
     Node *last;
+    int size;
 
 public:
     //Constructor de la cola
     Queue(){
         this->first = this->last  = 0;
+        this->size = 0;
     };
 
     //Verifica si la cola esta vacia
@@ -61,6 +63,7 @@ public:
         else
             last->setNext(n);
         last = n;
+        this->size++;
     }
 
     //Remueve el dato al frente de la cola
@@ -69,6 +72,7 @@ public:
         if(!isEmpty()){
             aux = first->getData();
             first = first->getNext();
+            this->size--;
         }
         return aux;
     }
@@ -109,6 +113,8 @@ public:
         system("dot -Tpng FichasJuego.dot -o FichasJuego.png");
     }
     ~Queue(){};
+
+    int getSize(){return size;}
 
 };
 
