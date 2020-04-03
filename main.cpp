@@ -83,9 +83,9 @@ int jsonDimension(QJsonObject jsonObject){
 
 string modules(){
     //Bienvenida de la terminal
-    string instructions[5] = {"Lectura de archivo JSON", "Registrar usuarios", "Jugar una partida", "Reportes", "Salir"};
+    string instructions[6] = {"Lectura de archivo JSON", "Registrar usuarios", "Jugar una partida", "Reportes", "Emergencia", "Salir"};
     string select;
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 6; ++i) {
         cout << to_string(i) + " - " + instructions[i] << endl;
     }
     cout << "Opcion: ";
@@ -135,30 +135,8 @@ int main(int argc, char *argv[])
     //Scoreboard del juego
     ScoreBoard scoreboard;
 
-    //Inicializamos algunas cosas para poder jugar tranquilo
-    dictionary.add("hola");
-    dictionary.add("ñandu");
-    dictionary.add("aux");
-    dictionary.add("amar");
-    dictionary.add("feca");
-
-    users.insert(registerUser("Yosoyfr"));
-    users.insert(registerUser("Mamba"));
-    users.insert(registerUser("Tfue"));
-    users.insert(registerUser("Ninja"));
-    users.insert(registerUser("a"));
-    users.insert(registerUser("b"));
-
-    squaresXP.addLast(SquaresXP(1, 1, 2));
-    squaresXP.addLast(SquaresXP(3, 2, 2));
-    squaresXP.addLast(SquaresXP(0, 2, 2));
-    squaresXP.addLast(SquaresXP(4, 0, 3));
-    squaresXP.addLast(SquaresXP(1, 5, 3));
-
-    dimension = 20;
-
     string c;
-    while (c != "4") {
+    while (c != "5") {
         cout << "Scrabble++\n" << endl;
         c = modules();
         if (c == "0") {
@@ -172,7 +150,8 @@ int main(int argc, char *argv[])
             dimension = jsonDimension(jsonObject);
             squaresXP = jsonSquares(jsonObject);
             dictionary = jsonDictionary(jsonObject);
-            cout << "Dimension establecida: " + to_string(dimension) << endl;
+            sleep(1);
+            system("clear");
         }
         else if (c == "1") {
             //Proceso para insertar usuarios
@@ -195,6 +174,8 @@ int main(int argc, char *argv[])
                     break;
                 }
             }
+            sleep(1);
+            system("clear");
         }
         else if (c == "2") {
             //Matriz: tablero del juego
@@ -322,8 +303,13 @@ int main(int argc, char *argv[])
 
                 //Seleccion del turno-----------------------------------------------------------------------------------------------------------------------
                 int turn = 0;
+                srand(time(NULL));
+                turn = rand() %2;
+
+                //Puntos obtenidos por jugador
                 int pointsP1 = 0;
                 int pointsP2 = 0;
+
                 //Empezamos la partida
                 while (pieces_in_game.getSize() > 0 && turn != 2) {
                     //Proceso de juego por turnos
@@ -363,7 +349,7 @@ int main(int argc, char *argv[])
                                 p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
                                 pieces_in_game.getDOT();
                                 cout << endl;
-                       del juego         cout << "0) Desea intercambar otra ficha?" << endl;
+                                cout << "0) Desea intercambar otra ficha?" << endl;
                                 cout << "X) Finalizar turno?" << endl;
                                 cout << "Opcion: ";
                                 cin >> instruction;
@@ -396,7 +382,7 @@ int main(int argc, char *argv[])
                                     board.getDOT();
                                 }
 
-                     del juego           //Preguntamos si desea validar o seguir insertando
+                                //Preguntamos si desea validar o seguir insertando
                                 p1.getDOT(p1, p2, player1->getData().getName(), player2->getData().getName());
                                 cout << endl;
                                 cout << "1) Desea insertar otra ficha?" << endl;
@@ -626,8 +612,9 @@ int main(int argc, char *argv[])
             else{
                 alert("El juego no cuenta con los jugadores suficientes para poder iniciar una partida");
             }
-
             cout << "\n";
+            sleep(1);
+            system("clear");
         }
         else if(c == "3"){
             //Reportes
@@ -667,17 +654,23 @@ int main(int argc, char *argv[])
                 }
                 else if (select == "5") {
                     //Mostrar historial de puntajes por un usuario
-                    Node *player = 0;
-                    while (!player) {
-                        cout << "Inserte el username del jugador: ";
-                        string j;
-                        cin >> j;
-                        player = users.search(users.getRoot(), j);
-                        if (!player) {
-                            alert("El usuario no fue encontrado");
+                    if (users.getRoot()) {
+                        Node *player = 0;
+                        while (!player) {
+                            cout << "Inserte el username del jugador: ";
+                            string j;
+                            cin >> j;
+                            player = users.search(users.getRoot(), j);
+                            if (!player) {
+                                alert("El usuario no fue encontrado");
+                            }
                         }
+                        player->getData().getScore();
                     }
-                    player->getData().getScore();
+                    else{
+                        alert("El ABB de usuarios no cuenta con  registros.");
+                        sleep(3);
+                    }
                 }
                 else if (select == "6") {
                     //Mostrar el scoreboard
@@ -689,8 +682,13 @@ int main(int argc, char *argv[])
                     cout << "Ingrese una opcion valida" << endl;
                     select = reports();
                 }
+                system("clear");
                 cout << "\n";
             }
+            system("clear");
+        }
+        else if (c == "4") {
+            //Aqui van unas estructuras llenas, por si algo sale mal :'v
         }
     }
 

@@ -42,7 +42,9 @@ public:
                        "rankdir=TB;\n"
                        "labelloc = \"t\";\n"
                        "node [shape=record];\n";
-        graph += root->getDOT();
+        if (root) {
+            graph += root->getDOT();
+        }
         graph += "graph[label=\"Usuarios del juego.\"];\n"
                  "}";
 
