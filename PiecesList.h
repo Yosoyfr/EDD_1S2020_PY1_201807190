@@ -169,11 +169,46 @@ public:
         return xp;
     }
 
+    //Proceso de evaluar las casillas del jugador
+    bool evaluateX(){
+        bool perm = true;
+        Node *aux = this->first;
+        int x = aux->getSquare().getX();
+        while (aux) {
+            if (aux->getSquare().getX() != x) {
+                perm = false;
+                break;
+            }
+            aux = aux->getNext();
+        }
+
+        return perm;
+    }
+
+    bool evaluateY(){
+        bool perm = true;
+        Node *aux = this->first;
+        int y = aux->getSquare().getY();
+        while (aux) {
+            if (aux->getSquare().getY() != y) {
+                perm = false;
+                break;
+            }
+            aux = aux->getNext();
+        }
+
+        return perm;
+    }
+
     //Retorna el tamaño de la lista
     int getSize(){return size;}
 
     //Retorna la cabeza
     Node *getFirst(){return first;}
+    int getX1(){return first->getSquare().getX();}
+    int getX2(){return last->getSquare().getX();}
+    int getY1(){return first->getSquare().getY();}
+    int getY2(){return last->getSquare().getY();}
 
     ~PiecesList(){};
 

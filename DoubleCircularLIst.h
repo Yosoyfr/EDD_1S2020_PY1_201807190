@@ -102,6 +102,21 @@ public:
         return aux;
     }
 
+    bool searchWord(string word){
+        bool found = false;
+        Node *aux = this->first;
+        if (!isEmpty()){
+            do{
+                if (aux->getData() == word){
+                    found = true;
+                    break;
+                }
+                aux = aux->getNext();
+            } while (aux != this->first && !found);
+        }
+        return found;
+    }
+
     //Remueve elementos de la lista circular doble
     void remove(string word){
         Node *aux = search(word);

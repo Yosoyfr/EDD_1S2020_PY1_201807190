@@ -510,12 +510,39 @@ public:
         }
 
         cout << "La coordenada en X es: " + to_string(x) << endl;
-        cout << "La coordenada en Y es: " + to_string(x) << endl;
+        cout << "La coordenada en Y es: " + to_string(y) << endl;
 
         SquaresXP piece;
         piece = SquaresXP(x, y, squaresXP.multiplierXP(x, y));
 
         return piece;
+    }
+
+    //Proceso de suma de puntos
+    string evaluateWordCol(int x, int y1, int y2){
+        //Obtenemos las cabeceras
+        Node *column = this->search_Column(x);
+        string word;
+        while (column) {
+            if (column->getY() >= y1 && column->getY() <= y2) {
+                word += column->getData().getLetter();
+            }
+            column = column->getDown();
+        }
+        return word;
+    }
+
+    string evaluateWordRow(int y, int x1, int x2){
+        //Obtenemos las cabeceras
+        Node *row = this->search_Row(y);
+        string word;
+        while (row) {
+            if (row->getX() >= x1 && row->getX() <= x2) {
+                word += row->getData().getLetter();
+            }
+            row = row->getNext();
+        }
+        return word;
     }
 
     ~Matrix(){};
