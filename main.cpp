@@ -139,6 +139,37 @@ string win(string p1, int s1, string p2, int s2){
     }
 }
 
+int posI(string pos, int squareR){
+    int r = -1;
+    while (1) {
+        cout << "Inserte la posicion " + pos + ": ";
+        cin >> r;
+        cout << endl;
+        if (r >= 0 && r <= squareR) {
+            break;
+        }
+        else{
+            alert("Inserte posiciones validas para " + pos);
+        }
+    }
+    return r;
+}
+
+int posF(string pos, int squareR, int dimension){
+    int r = -1;
+    while (1) {
+        cout << "Inserte la posicion " + pos + ": ";
+        cin >> r;
+        cout << endl;
+        if (r >= squareR && r < dimension) {
+            break;
+        }
+        else{
+            alert("Inserte posiciones validas para " + pos);
+        }
+    }
+    return r;
+}
 
 int main(int argc, char *argv[])
 {
@@ -152,6 +183,8 @@ int main(int argc, char *argv[])
 
     //Arbol de usuarios
     BinarySearchTree users;
+    users.insert(registerUser("Yosoyfr"));
+    users.insert(registerUser("Mamba"));
 
     string c;
     while (c != "5") {
@@ -418,14 +451,21 @@ int main(int argc, char *argv[])
                             string word = "";
                             bool evaluateX = squaresEvaluate.evaluateX();
                             bool evaluateY = squaresEvaluate.evaluateY();
+                            //Proceso de pedirs desde donde evaluar
+                            int init = -1;
+                            int final = -1;
                             if (evaluateX) {
                                 //Evaluacion por medio de busqueda en una columna
-                                word = board.evaluateWordCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());;
+                                init = posI("Y1", squaresEvaluate.getY1());
+                                final = posF("Y2", squaresEvaluate.getY2(), dimension);
+                                word = board.evaluateWordCol(squaresEvaluate.getX1(), init, final);
                                 cout << "La palabra registrada fue: " + word << endl;
                             }
                             else if (evaluateY) {
                                 //Evaluacion por medio de busqueda en una fila
-                                word = board.evaluateWordRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+                                init = posI("X1", squaresEvaluate.getX1());
+                                final = posF("X2", squaresEvaluate.getX2(), dimension);
+                                word = board.evaluateWordRow(squaresEvaluate.getY1(), init, final);
                                 cout << "La palabra registrada fue: " + word << endl;
                             }
                             else{
@@ -443,10 +483,10 @@ int main(int argc, char *argv[])
                             if (word != "") {
                                 bool existWord = dictionary.searchWord(word);
                                 if (existWord && evaluateX) {
-                                    points = board.getPointsCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());
+                                    points = board.getPointsCol(squaresEvaluate.getX1(), init, final);
                                 }
                                 else if (existWord && evaluateY) {
-                                    points = board.getPointsRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+                                    points = board.getPointsRow(squaresEvaluate.getY1(), init, final);
 
                                 }
                                 else {
@@ -543,14 +583,21 @@ int main(int argc, char *argv[])
                             string word = "";
                             bool evaluateX = squaresEvaluate.evaluateX();
                             bool evaluateY = squaresEvaluate.evaluateY();
+                            //Proceso de pedirs desde donde evaluar
+                            int init = -1;
+                            int final = -1;
                             if (evaluateX) {
                                 //Evaluacion por medio de busqueda en una columna
-                                word = board.evaluateWordCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());;
+                                init = posI("Y1", squaresEvaluate.getY1());
+                                final = posF("Y2", squaresEvaluate.getY2(), dimension);
+                                word = board.evaluateWordCol(squaresEvaluate.getX1(), init, final);
                                 cout << "La palabra registrada fue: " + word << endl;
                             }
                             else if (evaluateY) {
                                 //Evaluacion por medio de busqueda en una fila
-                                word = board.evaluateWordRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
+                                init = posI("X1", squaresEvaluate.getX1());
+                                final = posF("X2", squaresEvaluate.getX2(), dimension);
+                                word = board.evaluateWordRow(squaresEvaluate.getY1(), init, final);
                                 cout << "La palabra registrada fue: " + word << endl;
                             }
                             else{
@@ -558,7 +605,7 @@ int main(int argc, char *argv[])
                                 //Proceso de retornar las fichas insertadas
                                 NodePiece *auxP = squaresEvaluate.getFirst();
                                 while (auxP) {
-                                    p2.addLast(board.remove(auxP->getSquare().getX(), auxP->getSquare().getY()));
+                                    p1.addLast(board.remove(auxP->getSquare().getX(), auxP->getSquare().getY()));
                                     auxP = auxP->getNext();
                                 }
                                 board.getDOT();
@@ -568,11 +615,10 @@ int main(int argc, char *argv[])
                             if (word != "") {
                                 bool existWord = dictionary.searchWord(word);
                                 if (existWord && evaluateX) {
-                                    points = board.getPointsCol(squaresEvaluate.getX1(), squaresEvaluate.getY1(), squaresEvaluate.getY2());
+                                    points = board.getPointsCol(squaresEvaluate.getX1(), init, final);
                                 }
                                 else if (existWord && evaluateY) {
-                                    points = board.getPointsRow(squaresEvaluate.getY1(), squaresEvaluate.getX1(), squaresEvaluate.getX2());
-
+                                    points = board.getPointsRow(squaresEvaluate.getY1(), init, final);
                                 }
                                 else {
                                     cout << "La palabra registrada no coincide con alguna del diccionario." << endl;
@@ -759,13 +805,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-

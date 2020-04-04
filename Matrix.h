@@ -269,6 +269,38 @@ public:
         return row;
     }
 
+    //Buscar la ficha
+    //Cuando tenga la misma x
+    bool searchByCol(int x, int y){
+        bool perm = false;
+        Node *column = this->search_Column(x);
+        while (column) {
+            if (column->getY() == y) {
+                //Si existe
+                perm = true;
+                break;
+            }
+            column = column->getDown();
+        }
+        //No existe
+        return perm;
+    }
+
+    //Cuando tenga la misma x
+    bool searchByRow(int y, int x){
+        bool perm = false;
+        Node *row = this->search_Row(y);
+        while (row) {
+            if (row->getX() == x) {
+                //Si existe
+                perm = true;
+                break;
+            }
+            row = row->getNext();
+        }
+        //No existe
+        return perm;
+    }
 
     //Proceso de insertar en la matriz
     void insert(int x, int y, Game_Piece data, int multiplier){
@@ -490,28 +522,53 @@ public:
         cout << "!! Alert: " + error + " !!" << endl;
     }
 
-    SquaresXP insertPiece(int dimension, PiecesList squaresXP){
-        int x = -1;
-        while (x < 0 || x > dimension ) {
-            cout << "Ingrese la coordenada en X: ";
-            cin >> x;
-            if (x < 0) {
-                alert("No se permiten numeros menonres a 0");
-            }
-            else if (x > dimension) {
-                alert("No se permiten numeros mayores a " + to_string(dimension));
+    //Metodo de orientacion
+    string insertOrientation(){
+        //Se le pregunta la orientacion
+        string orientation = "";
+        while (orientation != "0" && orientation != "1") {
+            cout << "Ingrese la orientacion para empezar a insertar: " << endl;
+            cout << "0) Horizontal" << endl;
+            cout << "1) Vertical" << endl;
+            cout << "Opcion: ";
+            cin >> orientation;
+            if (orientation != "0" && orientation != "1") {
+                alert("Inserte una opcion valida");
             }
         }
+        return orientation;
+    }
 
+    SquaresXP insertPiece(int dimension, PiecesList squaresXP){
+        int x = -1;
         int y = -1;
-        while (y < 0 || y > dimension ) {
-            cout << "Ingrese la coordenada en Y: ";
-            cin >> y;
-            if (y < 0) {
-                alert("No se permiten numeros menonres a 0");
+        while (searchByCol(x, y) || searchByRow(y, x)) {
+            while (x < 0 || x > dimension) {
+                cout << "Ingrese la coordenada en X: ";
+                cin >> x;
+                if (x < 0) {
+                    alert("No se permiten numeros menonres a 0");
+                }
+                else if (x > dimension) {
+                    alert("No se permiten numeros mayores a " + to_string(dimension));
+                }
             }
-            else if (y > dimension) {
-                alert("No se permiten numeros mayores a " + to_string(dimension));
+
+
+            while (y < 0 || y > dimension ) {
+                cout << "Ingrese la coordenada en Y: ";
+                cin >> y;
+                if (y < 0) {
+                    alert("No se permiten numeros menonres a 0");
+                }
+                else if (y > dimension) {
+                    alert("No se permiten numeros mayores a " + to_string(dimension));
+                }
+            }
+            if (searchByCol(x, y) || searchByRow(y, x)) {
+                alert("Existe esta posicion");
+                x = -1;
+                y = -1;
             }
         }
 
