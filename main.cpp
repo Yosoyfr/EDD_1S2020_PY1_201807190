@@ -22,6 +22,7 @@
 #include <QJsonValue>
 #include <QJsonArray>
 
+#include <clocale>
 #include <unistd.h>
 
 #include <iostream>
@@ -171,6 +172,7 @@ int posF(string pos, int squareR, int dimension){
     return r;
 }
 
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -183,8 +185,6 @@ int main(int argc, char *argv[])
 
     //Arbol de usuarios
     BinarySearchTree users;
-    users.insert(registerUser("Yosoyfr"));
-    users.insert(registerUser("Mamba"));
 
     string c;
     while (c != "5") {
@@ -199,6 +199,8 @@ int main(int argc, char *argv[])
             cin >> route;
             QJsonObject jsonObject = jsonReading(route.c_str());
 
+            squaresXP = PiecesList();
+            dictionary = DoubleCircularList();
             dimension = jsonDimension(jsonObject);
             squaresXP = jsonSquares(jsonObject);
             dictionary = jsonDictionary(jsonObject);
@@ -389,11 +391,16 @@ int main(int argc, char *argv[])
                             while (instruction == "0") {
                                 Game_Piece piece = Game_Piece("a", 0, "0");
                                 while (piece.getScore() == 0) {
+                                    cout << "Ingrese la letra a intercambiar: ";
+                                    string auxL;
+                                    cin >> auxL;
+                                    /*
                                     cin.get();
                                     cout << "Ingrese la letra a intercambiar: ";
-                                    char letter = cin.get();;
+                                    char letter = cin.get();
                                     string auxL;
                                     auxL += letter;
+                                    */
                                     piece = p1.remove(auxL);
                                 }
                                 if (piece.getScore() > 0) {
@@ -521,11 +528,16 @@ int main(int argc, char *argv[])
                             while (instruction == "0") {
                                 Game_Piece piece = Game_Piece("a", 0, "0");
                                 while (piece.getScore() == 0) {
+                                    cout << "Ingrese la letra a intercambiar: ";
+                                    string auxL;
+                                    cin >> auxL;
+                                    /*
                                     cin.get();
                                     cout << "Ingrese la letra a intercambiar: ";
                                     char letter = cin.get();;
                                     string auxL;
                                     auxL += letter;
+                                    */
                                     piece = p2.remove(auxL);
                                 }
                                 if (piece.getScore() > 0) {
@@ -672,6 +684,9 @@ int main(int argc, char *argv[])
                 cout << "J2: " + player2->getData()->getName() + " obtuvo: " + to_string(pointsP2) + " pts." << endl;
                 player2->getData()->addScore(pointsP2);
                 cout << "El ganador es: " + win(player1->getData()->getName(), pointsP1, player2->getData()->getName(), pointsP2) << endl;
+                cout << "\n";
+                sleep(8);
+                system("clear");
             }
             else if (dictionary.getSize() == 0) {
                 alert("El juego no cuenta con un diccionario");
@@ -683,7 +698,7 @@ int main(int argc, char *argv[])
                 alert("El juego no cuenta con los jugadores suficientes para poder iniciar una partida");
             }
             cout << "\n";
-            sleep(10);
+            sleep(2);
             system("clear");
         }
         else if(c == "3"){
@@ -744,9 +759,15 @@ int main(int argc, char *argv[])
                 }
                 else if (select == "6") {
                     //Mostrar el scoreboard
-                    users.getScoreBoard();
-                    sleep(1);
-                    system("xdg-open ScoreBoard.png");
+                    if (users.getRoot()) {
+                        users.getScoreBoard();
+                        sleep(1);
+                        system("xdg-open ScoreBoard.png");
+                    }
+                    else{
+                        alert("El ABB de usuarios no cuenta con  registros.");
+                        sleep(3);
+                    }
                 }
                 else if (select == "7"){
                     break;

@@ -49,7 +49,7 @@ class Matrix
             if(this->down != NULL){
                 string rowC = "R" + to_string(this->y);
                 string rowD = "R" + to_string(this->down->y);
-                return rowC + " -> " + rowD + " -> " + rowC + ";\n";
+                return rowC + " -> " + rowD + " [dir=both];\n";
             }
             return "";
         }
@@ -66,7 +66,7 @@ class Matrix
             if(this->next != NULL){
                 string columnC = "C" + to_string(this->x);
                 string columnD = "C" + to_string(this->next->x);
-                return columnC + " -> " + columnD + " -> " + columnC + ";\n";
+                return columnC + " -> " + columnD +  " [dir=both];\n";
             }
             return "";
         }
@@ -110,7 +110,7 @@ class Matrix
             if(this->next != NULL){
                 string columnC = "N" + to_string(this->x) + to_string(this->y);
                 string columnD = "N" + to_string(this->next->x) + to_string(this->next->y);
-                return columnC + " -> " + columnD + " -> " + columnC + ";\n";
+                return columnC + " -> " + columnD +  " [dir=both];\n";
             }
             return "";
         }
@@ -119,7 +119,7 @@ class Matrix
             if(this->down != NULL){
                 string rowC = "N" + to_string(this->x) + to_string(this->y);
                 string rowD = "N" + to_string(this->down->x) + to_string(this->down->y);
-                return rowC + " -> " + rowD + " -> " + rowC + ";\n";
+                return rowC + " -> " + rowD +  " [dir=both];\n";
             }
             return "";
         }
@@ -433,7 +433,7 @@ public:
                 }
 
                 aux = this->root->getDown();
-                graph += "Root -> " + firtsRow + " -> Root;\n";
+                graph += "Root -> " + firtsRow + " [dir=both];\n";
                 while (aux) {
                     graph += aux->getPointR();
                     aux = aux->getDown();
@@ -450,7 +450,7 @@ public:
                 }
 
                 aux = this->root->getNext();
-                graph += "Root -> " + firtsColumn + " -> Root;\n";
+                graph += "Root -> " + firtsColumn + " [dir=both];\n";
                 while (aux) {
                     graph += aux->getPointC();
                     aux = aux->getNext();
@@ -479,7 +479,7 @@ public:
                 string row = "R" + to_string(aux->getY());
                 Node *temp = aux->getNext();
                 string c = "N" + to_string(temp->getX()) + to_string(temp->getY());
-                graph += row + " -> " + c + " -> " + row + ";\n";
+                graph += row + " -> " + c + " [dir=both];\n";
                 while (temp) {
                     graph += temp->getPointX();
                     temp = temp->getNext();
@@ -495,7 +495,7 @@ public:
                 string column = "C" + to_string(aux->getX());
                 Node *temp = aux->getDown();
                 string c = "N" + to_string(temp->getX()) + to_string(temp->getY());
-                graph += column + " -> " + c + " -> " + column + ";\n";
+                graph += column + " -> " + c + " [dir=both];\n";
                 while (temp) {
                     graph += temp->getPointY();
                     temp = temp->getDown();
