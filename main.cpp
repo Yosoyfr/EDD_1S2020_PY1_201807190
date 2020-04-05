@@ -394,13 +394,6 @@ int main(int argc, char *argv[])
                                     cout << "Ingrese la letra a intercambiar: ";
                                     string auxL;
                                     cin >> auxL;
-                                    /*
-                                    cin.get();
-                                    cout << "Ingrese la letra a intercambiar: ";
-                                    char letter = cin.get();
-                                    string auxL;
-                                    auxL += letter;
-                                    */
                                     piece = p1.remove(auxL);
                                 }
                                 if (piece.getScore() > 0) {
