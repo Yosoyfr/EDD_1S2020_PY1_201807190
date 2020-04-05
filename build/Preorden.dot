@@ -1,0 +1,7 @@
+digraph G{
+ rankdir=LR;
+labelloc = "t";
+node [shape=record];
+"yosoyfr"->"mamba"
+graph[label="Recorrido preorden del ABB."];
+}

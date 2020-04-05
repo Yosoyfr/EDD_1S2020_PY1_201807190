@@ -1,0 +1,9 @@
+digraph G{
+ rankdir=TB;
+labelloc = "t";
+node [shape=record];
+"a" [label = "<C0>|a|<C1>"];
+"b" [label = "b"];
+"a":C1->"b";
+graph[label="Usuarios del juego."];
+}

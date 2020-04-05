@@ -1,0 +1,7 @@
+digraph G{
+ rankdir=LR;
+labelloc = "t";
+node [shape=record];
+"mamba"->"tfue"->"yosoyfr"
+graph[label="Recorrido inorden del ABB."];
+}

@@ -1,0 +1,7 @@
+digraph Matrix{
+ labelloc = "t";
+node [shape=box];
+Root[label= "Root", width=1.5, style=filled, fillcolor = black, fontcolor=white, group = 1];
+graph[label="Tablero del juego. 
+ Multiplicadores de XP: x1 - Azure, x2 - Celeste, x3 - Menta."];
+}

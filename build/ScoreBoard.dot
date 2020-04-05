@@ -1,0 +1,7 @@
+digraph G{
+ rankdir=LR;
+labelloc = "t";
+node [shape=record];
+"a, 24 pts."->"b, 23 pts.";
+graph[label="Scoreboard del juego."];
+}

@@ -1,0 +1,6 @@
+digraph G{
+ rankdir=LR;
+labelloc = "t";
+node [shape=record]
+graph[label="Recorrido postorder del ABB."];
+}

@@ -1,0 +1,249 @@
+digraph G{
+ labelloc = "t";
+abc [shape=record, margin=0, label=<
+<table width="150" ><tr>
+<td width="150" height="75"  BGCOLOR="#1705F9">g x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#05E3F9">c x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">q x5pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EEA242">i x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F91A1A">n x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#9CAD70">u x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#7083AD">d x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#1705F9">g x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F91A1A">n x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EE6642">s x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">ñ x8pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F90505">t x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#AD70A1">l x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#50994B">p x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#B9F91A">r x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EEA242">i x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F90505">t x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#05E3F9">c x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">j x8pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#7083AD">d x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F90505">t x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#B9F91A">r x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F91A1A">n x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#A005F9">b x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">v x4pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">z x10pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EEA242">i x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#7083AD">d x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">h x4pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#05E3F9">c x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">f x4pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#7083AD">d x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F905BA">m x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EEA242">i x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#AD70A1">l x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#7083AD">d x2pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EEA242">i x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F905BA">m x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EEA242">i x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#E4EE42">o x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EE6642">s x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EE6642">s x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#05E3F9">c x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#EE6642">s x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#9CAD70">u x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#9CAD70">u x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#A005F9">b x3pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#B9F91A">r x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#B9F91A">r x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#F90505">t x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#B9F91A">r x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#9CAD70">u x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#AD70A1">l x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#FFD500">h x4pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#AD70A1">l x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2FC25E">e x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#2769AB">a x1pts</td>
+</tr>
+<tr>
+<td width="150" height="75"  BGCOLOR="#9CAD70">u x1pts</td>
+</tr>
+</table>>];
+graph[label="Fichas disponibles del juego."];
+}
